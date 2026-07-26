@@ -2,11 +2,14 @@
 <html lang="de">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCM Live-Wetter Mattsee</title>
 
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SCM Live-Wetter Mattsee</title>
+
+<link rel="stylesheet" href="css/style.css">
+
 </head>
 
 <body>
@@ -15,13 +18,19 @@
 
     <div class="header-left">
 
-        <img src="assets/logo/scm-stander.png"
-             alt="SCM"
-             class="logo">
+        <img
+            src="assets/logo/scm-stander.png"
+            alt="SCM"
+            class="logo">
 
         <div>
+
             <h1>SCM Live-Wetter</h1>
-            <div class="subtitle">Mattsee</div>
+
+            <div class="subtitle">
+                Mattsee
+            </div>
+
         </div>
 
     </div>
@@ -42,114 +51,167 @@
 
 <main>
 
-    <!-- Wind -->
+<!-- WIND -->
 
-    <section class="card wind-card">
+<section class="card wind-card">
 
-        <div class="wind-number">
-            <span id="wind">--</span>
-        </div>
+    <div class="wind-number">
 
-        <div class="wind-unit">
-            kt
-        </div>
+        <span id="wind">--</span>
 
-        <div class="wind-direction">
+        <span class="wind-unit">kt</span>
+
+    </div>
+
+    <div id="beaufort" class="beaufort">
+        -- Bft
+    </div>
+
+    <div class="wind-direction">
+
+        <div class="windrose">
+
+            <div class="north">N</div>
+            <div class="north-east">NO</div>
+            <div class="east">O</div>
+            <div class="south-east">SO</div>
+            <div class="south">S</div>
+            <div class="south-west">SW</div>
+            <div class="west">W</div>
+            <div class="north-west">NW</div>
 
             <div id="windArrow" class="wind-arrow">
-                ↑
+
+                <svg viewBox="0 0 100 100">
+
+                    <line
+                        x1="50"
+                        y1="82"
+                        x2="50"
+                        y2="18"
+                        stroke="#d60000"
+                        stroke-width="6"
+                        stroke-linecap="round"/>
+
+                    <polygon
+                        points="50,8 40,26 60,26"
+                        fill="#d60000"/>
+
+                </svg>
+
             </div>
 
-            <div id="directionValue">
-                --
-            </div>
-
-            <div id="directionText">
-                --
-            </div>
+            <div class="center"></div>
 
         </div>
 
-        <div class="gust-box">
-            Böen:
-            <span id="gust">--</span>
+        <div id="directionValue">
+            --
         </div>
 
-    </section>
-
-    <!-- Segelampel -->
-
-    <section class="card">
-
-        <div id="sailingLight" class="traffic-light">
-            Wird berechnet...
+        <div id="directionText">
+            --
         </div>
 
-    </section>
+    </div>
 
-    <!-- Wetterdaten -->
+    <div class="gust-box">
 
-    <section class="weather-grid">
+        Böen
 
-        <div class="small-card">
+        <span id="gust">
+            --
+        </span>
 
-            <div class="icon">🌡</div>
+    </div>
 
-            <div class="label">Temperatur</div>
+</section>
 
-            <div id="temperature" class="value">
-                --
-            </div>
+<!-- SEGELAMPEL -->
 
-        </div>
+<section class="card">
 
-        <div class="small-card">
+    <div
+        id="sailingLight"
+        class="traffic-light">
 
-            <div class="icon">💧</div>
+        Wird berechnet...
 
-            <div class="label">Luftfeuchte</div>
+    </div>
 
-            <div id="humidity" class="value">
-                --
-            </div>
+</section>
 
-        </div>
+<!-- WETTERDATEN -->
 
-        <div class="small-card">
+<section class="weather-grid">
 
-            <div class="icon">⬇</div>
+<div class="small-card">
 
-            <div class="label">Luftdruck</div>
+<div class="icon">🌡</div>
 
-            <div id="pressure" class="value">
-                --
-            </div>
+<div class="label">Temperatur</div>
 
-        </div>
+<div id="temperature" class="value">
 
-        <div class="small-card">
+--
 
-            <div class="icon">☔</div>
+</div>
 
-            <div class="label">Niederschlag</div>
+</div>
 
-            <div id="rain" class="value">
-                --
-            </div>
+<div class="small-card">
 
-        </div>
+<div class="icon">💧</div>
 
-    </section>
+<div class="label">Luftfeuchte</div>
 
-    <!-- Status -->
+<div id="humidity" class="value">
 
-    <section class="card footer-card">
+--
 
-        <div id="refreshInfo">
-            Nächste Aktualisierung in 60 s
-        </div>
+</div>
 
-    </section>
+</div>
+
+<div class="small-card">
+
+<div class="icon">⬇</div>
+
+<div class="label">Luftdruck</div>
+
+<div id="pressure" class="value">
+
+--
+
+</div>
+
+</div>
+
+<div class="small-card">
+
+<div class="icon">☔</div>
+
+<div class="label">Niederschlag</div>
+
+<div id="rain" class="value">
+
+--
+
+</div>
+
+</div>
+
+</section>
+
+<section class="card footer-card">
+
+<div id="refreshInfo">
+
+Nächste Aktualisierung ...
+
+</div>
+
+</section>
 
 </main>
 
