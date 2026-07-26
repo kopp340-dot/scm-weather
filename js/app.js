@@ -1,5 +1,16 @@
 const url = "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
 
+function degreeToDirection(degree) {
+    const directions = [
+        "N", "NNO", "NO", "ONO",
+        "O", "OSO", "SO", "SSO",
+        "S", "SSW", "SW", "WSW",
+        "W", "WNW", "NW", "NNW"
+    ];
+
+    const index = Math.round(degree / 22.5) % 16;
+    return directions[index];
+}
 async function loadWeather() {
 
     const response = await fetch(url);
@@ -23,6 +34,14 @@ async function loadWeather() {
     const rain = p.RR.data[0];
 
     const time = json.timestamps[0];
+    const date = new Date(time);
+    const formattedTime = date.toLocaleString("de-AT", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+    }) + " Uhr";
 
     document.getElementById("temperature").textContent =
         temp.toFixed(1) + " °C";
@@ -43,10 +62,10 @@ async function loadWeather() {
         rain.toFixed(1) + " mm";
 
     document.getElementById("direction").textContent =
-        direction + "°";
+        `${direction}° (${degreeToDirection(direction)})`;
 
     document.getElementById("timestamp").textContent =
-        time;
+        formattedTime;
 }
 
 loadWeather();

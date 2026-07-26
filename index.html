@@ -10,21 +10,23 @@
 
 <h1>SCM Wetterstation Mattsee</h1>
 
-<p><strong>Wind:</strong> <span id="wind">--</span></p>
+<div class="card wind-card">
+    <h2>🌬 Wind</h2>
 
-<p><strong>Böen:</strong> <span id="gust">--</span></p>
+    <div id="wind" class="wind-value">--</div>
 
-<p><strong>Luftdruck:</strong> <span id="pressure">--</span></p>
+    <div id="direction" class="direction">--</div>
 
-<p><strong>Luftfeuchte:</strong> <span id="humidity">--</span></p>
+    <p>Böen: <span id="gust">--</span></p>
+</div>
 
-<p><strong>Niederschlag:</strong> <span id="rain">--</span></p>
-
-<p><strong>Windrichtung:</strong> <span id="direction">--</span></p>
-
-<p><strong>Temperatur:</strong> <span id="temperature">--</span></p>
-
-<p><strong>Letzte Messung:</strong> <span id="timestamp">--</span></p>
+<div class="card">
+    <p><strong>🌡 Temperatur:</strong> <span id="temperature">--</span></p>
+    <p><strong>⬇ Luftdruck:</strong> <span id="pressure">--</span></p>
+    <p><strong>💧 Luftfeuchte:</strong> <span id="humidity">--</span></p>
+    <p><strong>☔ Niederschlag:</strong> <span id="rain">--</span></p>
+    <p><strong>🕒 Letzte Messung:</strong> <span id="timestamp">--</span></p>
+</div>
 
 <script src="js/app.js"></script>
 
