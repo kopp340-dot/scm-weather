@@ -1,49 +1,184 @@
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #eef3f8;
+* {
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-h1 {
-    text-align: center;
-    color: #005b96;
-    margin-bottom: 30px;
+:root{
+    --scm-blue:#005a9c;
+    --scm-light:#eef5fb;
+    --card:#ffffff;
+    --text:#1f2937;
+    --shadow:0 8px 24px rgba(0,0,0,.08);
+    --radius:18px;
 }
 
-.card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--scm-light);
+    color:var(--text);
+    padding:14px;
 }
 
-.wind-card {
-    text-align: center;
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
 }
 
-.wind-value {
-    font-size: 64px;
-    font-weight: bold;
-    color: #0077cc;
-    margin: 15px 0;
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
-.direction {
-    font-size: 32px;
-    margin-bottom: 15px;
-    color: #444;
+.logo{
+    width:56px;
+    height:auto;
 }
 
-.card p {
-    font-size: 20px;
-    margin: 10px 0;
+h1{
+    font-size:1.45rem;
+    color:var(--scm-blue);
 }
-.traffic-light {
-    font-size: 28px;
-    font-weight: bold;
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
+
+.subtitle{
+    color:#666;
+    font-size:.9rem;
+}
+
+.header-right{
+    text-align:right;
+}
+
+.live{
+    font-size:.85rem;
+    font-weight:bold;
+    color:#16a34a;
+    margin-bottom:4px;
+}
+
+#timestamp{
+    font-size:.8rem;
+    color:#666;
+}
+
+.card{
+    background:white;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:18px;
+    margin-bottom:16px;
+}
+
+.wind-card{
+    text-align:center;
+}
+
+.wind-number{
+    font-size:5rem;
+    line-height:1;
+    font-weight:bold;
+    color:var(--scm-blue);
+}
+
+.wind-unit{
+    font-size:1.5rem;
+    color:#666;
+    margin-top:6px;
+}
+
+.wind-direction{
+    margin-top:20px;
+    text-align:center;
+}
+
+.wind-arrow{
+    font-size:70px;
+    color:#005a9c;
+    transition:transform .4s;
+}
+
+#directionValue{
+    font-size:32px;
+    font-weight:bold;
+    margin-top:5px;
+}
+
+#directionText{
+    font-size:22px;
+    color:#666;
+}
+
+.gust-box{
+    margin-top:16px;
+    font-size:1.2rem;
+}
+
+.gust-box span{
+    font-weight:bold;
+    color:var(--scm-blue);
+}
+
+.traffic-light{
+    font-size:1.6rem;
+    font-weight:bold;
+    text-align:center;
+    padding:16px;
+    border-radius:12px;
+}
+
+.weather-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.small-card{
+    background:white;
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    padding:18px;
+    text-align:center;
+}
+
+.icon{
+    font-size:2rem;
+}
+
+.label{
+    margin-top:8px;
+    color:#666;
+    font-size:.9rem;
+}
+
+.value{
+    margin-top:10px;
+    font-size:2rem;
+    font-weight:bold;
+    color:var(--scm-blue);
+}
+
+.footer-card{
+    text-align:center;
+    color:#666;
+}
+
+@media(min-width:768px){
+
+    body{
+        max-width:900px;
+        margin:auto;
+        padding:30px;
+    }
+
+    .wind-number{
+        font-size:7rem;
+    }
+
+    .weather-grid{
+        grid-template-columns:repeat(4,1fr);
+    }
+
 }

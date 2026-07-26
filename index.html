@@ -1,42 +1,160 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCM Wetterstation</title>
+    <title>SCM Live-Wetter Mattsee</title>
+
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-<h1>SCM Wetterstation Mattsee</h1>
+<header class="header">
 
-<div class="card wind-card">
-    <h2>🌬 Wind</h2>
+    <div class="header-left">
 
-    <div id="wind" class="wind-value">--</div>
+        <img src="assets/logo/scm-stander.png"
+             alt="SCM"
+             class="logo">
 
-    <div id="direction" class="direction">--</div>
+        <div>
+            <h1>SCM Live-Wetter</h1>
+            <div class="subtitle">Mattsee</div>
+        </div>
 
-    <p>Böen: <span id="gust">--</span></p>
-</div>
-
-<div class="card">
-    <h2>🚦 Segelampel</h2>
-
-    <div id="sailingLight" class="traffic-light">
-        Wird berechnet...
     </div>
-</div>
 
-<div class="card">
-    <p><strong>🌡 Temperatur:</strong> <span id="temperature">--</span></p>
-    <p><strong>⬇ Luftdruck:</strong> <span id="pressure">--</span></p>
-    <p><strong>💧 Luftfeuchte:</strong> <span id="humidity">--</span></p>
-    <p><strong>☔ Niederschlag:</strong> <span id="rain">--</span></p>
-    <p><strong>🕒 Letzte Messung:</strong> <span id="timestamp">--</span></p>
-</div>
+    <div class="header-right">
+
+        <div id="liveStatus" class="live">
+            🟢 LIVE
+        </div>
+
+        <div id="timestamp">
+            --
+        </div>
+
+    </div>
+
+</header>
+
+<main>
+
+    <!-- Wind -->
+
+    <section class="card wind-card">
+
+        <div class="wind-number">
+            <span id="wind">--</span>
+        </div>
+
+        <div class="wind-unit">
+            kt
+        </div>
+
+        <div class="wind-direction">
+
+            <div id="windArrow" class="wind-arrow">
+                ↑
+            </div>
+
+            <div id="directionValue">
+                --
+            </div>
+
+            <div id="directionText">
+                --
+            </div>
+
+        </div>
+
+        <div class="gust-box">
+            Böen:
+            <span id="gust">--</span>
+        </div>
+
+    </section>
+
+    <!-- Segelampel -->
+
+    <section class="card">
+
+        <div id="sailingLight" class="traffic-light">
+            Wird berechnet...
+        </div>
+
+    </section>
+
+    <!-- Wetterdaten -->
+
+    <section class="weather-grid">
+
+        <div class="small-card">
+
+            <div class="icon">🌡</div>
+
+            <div class="label">Temperatur</div>
+
+            <div id="temperature" class="value">
+                --
+            </div>
+
+        </div>
+
+        <div class="small-card">
+
+            <div class="icon">💧</div>
+
+            <div class="label">Luftfeuchte</div>
+
+            <div id="humidity" class="value">
+                --
+            </div>
+
+        </div>
+
+        <div class="small-card">
+
+            <div class="icon">⬇</div>
+
+            <div class="label">Luftdruck</div>
+
+            <div id="pressure" class="value">
+                --
+            </div>
+
+        </div>
+
+        <div class="small-card">
+
+            <div class="icon">☔</div>
+
+            <div class="label">Niederschlag</div>
+
+            <div id="rain" class="value">
+                --
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Status -->
+
+    <section class="card footer-card">
+
+        <div id="refreshInfo">
+            Nächste Aktualisierung in 60 s
+        </div>
+
+    </section>
+
+</main>
 
 <script src="js/app.js"></script>
 
 </body>
+
 </html>
