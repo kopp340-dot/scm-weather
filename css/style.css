@@ -40,3 +40,10 @@ h1 {
     font-size: 20px;
     margin: 10px 0;
 }
+.traffic-light {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+}

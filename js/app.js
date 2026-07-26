@@ -23,6 +23,8 @@ async function loadWeather() {
 
     const wind = p.FF.data[0];
 
+    const windKnots = wind * 1.94384;
+
     const direction = p.DD.data[0];
 
     const gust = p.FFX.data[0];
@@ -47,7 +49,9 @@ async function loadWeather() {
         temp.toFixed(1) + " °C";
 
     document.getElementById("wind").textContent =
-        (wind * 1.94384).toFixed(1) + " kt";
+        windKnots.toFixed(1) + " kt";
+
+    updateSailingLight(windKnots);
 
     document.getElementById("gust").textContent =
         (gust * 1.94384).toFixed(1) + " kt";
@@ -66,6 +70,34 @@ async function loadWeather() {
 
     document.getElementById("timestamp").textContent =
         formattedTime;
+}
+
+function updateSailingLight(windKnots) {
+
+    const light = document.getElementById("sailingLight");
+
+    if (windKnots < 5) {
+        light.textContent = "🔴 Zu wenig Wind";
+        light.style.background = "#ffdddd";
+    }
+    else if (windKnots < 11) {
+        light.textContent = "🟡 Leichtwind";
+        light.style.background = "#fff6bf";
+    }
+    else if (windKnots < 21) {
+        light.textContent = "🟢 Gute Bedingungen";
+        light.style.background = "#d9ffd9";
+    }
+    else if (windKnots < 31) {
+        light.textContent = "🟠 Starkwind";
+        light.style.background = "#ffe0c2";
+    }
+    else {
+        light.textContent = "🔴 Sturm";
+        light.style.background = "#ffb3b3";
+    }
+ 
+
 }
 
 loadWeather();
