@@ -495,3 +495,15 @@ body{
 }
 
 }
+
+.version{
+
+    margin-top:12px;
+
+    font-size:0.8rem;
+
+    color:#777;
+
+    text-align:center;
+
+}

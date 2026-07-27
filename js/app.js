@@ -1,3 +1,5 @@
+const VERSION = "0.8";
+
 const API_URL =
 "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
 
@@ -254,6 +256,9 @@ async function loadWeather() {
 // ----------------------------------------------------
 // Start
 // ----------------------------------------------------
+
+document.getElementById("version").textContent =
+    "SCM Live-Wetter · Version " + VERSION + " · © 2026 Segelclub Mattsee";
 
 loadWeather();
 
