@@ -211,6 +211,7 @@ body{
 .windrose div{
 
     position:absolute;
+    z-index:15;
 
 }
 
@@ -259,7 +260,7 @@ body{
 
 .north-east{
 
-    top:22px;
+    top:12px;
     right:22px;
     font-size:1rem;
 
@@ -267,7 +268,7 @@ body{
 
 .south-east{
 
-    bottom:22px;
+    bottom:12px;
     right:22px;
     font-size:1rem;
 
@@ -275,7 +276,7 @@ body{
 
 .south-west{
 
-    bottom:22px;
+    bottom:12px;
     left:22px;
     font-size:1rem;
 
@@ -283,7 +284,7 @@ body{
 
 .north-west{
 
-    top:22px;
+    top:12px;
     left:22px;
     font-size:1rem;
 
