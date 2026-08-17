@@ -138,6 +138,7 @@ body{
 .wind-card{
 
     text-align:center;
+    background:rgba(255,255,255,.88);
 
 }
 
@@ -285,46 +286,44 @@ body{
 
 }
 
-.north-east{
-
-    top:12px;
-    right:22px;
-    font-size:1rem;
-
-}
-
-.south-east{
-
-    bottom:12px;
-    right:22px;
-    font-size:1rem;
-
-}
-
-.south-west{
-
-    bottom:12px;
-    left:22px;
-    font-size:1rem;
-
-}
-
-.north-west{
-
-    top:12px;
-    left:22px;
-    font-size:1rem;
-
-}
-
 .north-east,
 .south-east,
 .south-west,
 .north-west{
 
+    font-size:1rem;
     color:#5a7a9c;
 
 }
+
+.north-east{
+
+    top:8px;
+    right:10px;
+
+}
+
+.south-east{
+
+    bottom:8px;
+    right:10px;
+
+}
+
+.south-west{
+
+    bottom:8px;
+    left:10px;
+
+}
+
+.north-west{
+
+    top:8px;
+    left:10px;
+
+}
+
 
 /* Pfeil - groesser und kontrastreicher */
 
