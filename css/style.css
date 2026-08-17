@@ -43,7 +43,7 @@ body{
 
     z-index:-1;
 
-    filter:brightness(.75);
+    filter:brightness(.9);
 
     background:#2a3a4a;
 
@@ -117,7 +117,7 @@ body{
 
 .card{
 
-    background:rgba(255,255,255,.55);
+    background:rgba(255,255,255,.35);
 
     border-radius:16px;
 
@@ -138,7 +138,7 @@ body{
 .wind-card{
 
     text-align:center;
-    background:rgba(255,255,255,.55);
+    background:rgba(255,255,255,.35);
 
 }
 
@@ -451,7 +451,7 @@ body{
 
 .small-card{
 
-    background:rgba(255,255,255,.55);
+    background:rgba(255,255,255,.35);
 
     border-radius:14px;
 
