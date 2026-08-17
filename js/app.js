@@ -1,9 +1,14 @@
-const VERSION = "0.9";
+const VERSION = "1.0";
 
 const API_URL =
 "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
 
 const REFRESH_INTERVAL = 60000;
+
+// Panorama-Kamera (Segelclub Mattsee)
+const WEBCAM_URL = "https://scmattsee.panocloud.webcam/current1.jpg";
+// Stündliche Aktualisierung des Hintergrundbilds
+const WEBCAM_INTERVAL = 3600000;
 
 let secondsRemaining = 60;
 
@@ -150,6 +155,70 @@ function updateWindColor(knots){
 
 }
 // ----------------------------------------------------
+// Böen-Farbe (analog Windampel)
+// ----------------------------------------------------
+
+function updateGustColor(knots){
+
+    const gust =
+        document.getElementById("gust");
+
+    gust.classList.remove(
+        "gust-blue",
+        "gust-yellow",
+        "gust-green",
+        "gust-orange",
+        "gust-red"
+    );
+
+    if(knots < 4){
+
+        gust.classList.add("gust-blue");
+
+    }
+    else if(knots < 8){
+
+        gust.classList.add("gust-yellow");
+
+    }
+    else if(knots < 15){
+
+        gust.classList.add("gust-green");
+
+    }
+    else if(knots < 20){
+
+        gust.classList.add("gust-orange");
+
+    }
+    else{
+
+        gust.classList.add("gust-red");
+
+    }
+
+}
+
+// ----------------------------------------------------
+// Panorama-Hintergrundbild laden
+// ----------------------------------------------------
+
+function updateWebcam(){
+
+    const bg =
+        document.getElementById("webcamBg");
+
+    if(!bg) return;
+
+    // Cache-Busting: Zeitstempel erzwingt Neuladen
+    bg.src =
+        WEBCAM_URL +
+        "?t=" +
+        Date.now();
+
+}
+
+// ----------------------------------------------------
 // Wetterdaten laden
 // ----------------------------------------------------
 
@@ -193,6 +262,8 @@ async function loadWeather() {
             knotsToBeaufort(wind) + " Bft";
 
         updateWindColor(wind);
+
+        updateGustColor(gust);
 
         // Windrichtung
 
@@ -259,6 +330,10 @@ async function loadWeather() {
 
 document.getElementById("version").textContent =
     "SCM Live-Wetter · Version " + VERSION + " · © 2026 Segelclub Mattsee";
+
+// Webcam einmal laden und stündlich aktualisieren
+updateWebcam();
+setInterval(updateWebcam, WEBCAM_INTERVAL);
 
 loadWeather();
 
