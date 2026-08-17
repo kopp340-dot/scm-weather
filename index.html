@@ -5,14 +5,21 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Live-Wetter am Mattsee für Segelclub Mattsee: Wind, Böen, Windrichtung, Segelampel und aktuelle Wetterdaten von GeoSphere Austria.">
+<meta name="theme-color" content="#005a9c">
 
 <title>SCM Live-Wetter Mattsee</title>
 
+<link rel="icon" type="image/png" href="assets/logo/scm-stander.png">
+<link rel="apple-touch-icon" href="assets/logo/scm-stander.png">
 <link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body>
+
+<!-- Panorama-Kamera Hintergrund (Segelclub Mattsee) -->
+<img id="webcamBg" class="webcam-bg" alt="" aria-hidden="true">
 
 <header class="header">
 
@@ -71,6 +78,35 @@
 
         <div class="windrose">
 
+            <!-- Skalenstriche (Kompass) -->
+            <svg class="windrose-ticks" viewBox="0 0 200 200" aria-hidden="true">
+                <!-- Hauptrichtungen (lang, dick) -->
+                <g class="tick-major" stroke="#1d3a5c" stroke-width="2.5">
+                    <line x1="100" y1="28" x2="100" y2="40"/>
+                    <line x1="100" y1="160" x2="100" y2="172"/>
+                    <line x1="28" y1="100" x2="40" y2="100"/>
+                    <line x1="160" y1="100" x2="172" y2="100"/>
+                </g>
+                <!-- Nebenrichtungen (mittel) -->
+                <g class="tick-minor" stroke="#5a7a9c" stroke-width="1.8">
+                    <line x1="150.9" y1="49.1" x2="143.8" y2="56.2"/>
+                    <line x1="150.9" y1="150.9" x2="143.8" y2="143.8"/>
+                    <line x1="49.1" y1="150.9" x2="56.2" y2="143.8"/>
+                    <line x1="49.1" y1="49.1" x2="56.2" y2="56.2"/>
+                </g>
+                <!-- Feinstriche alle 30° -->
+                <g class="tick-fine" stroke="#9fb3c8" stroke-width="1">
+                    <line x1="136.0" y1="37.6" x2="133.0" y2="42.8"/>
+                    <line x1="162.4" y1="64.0" x2="157.2" y2="67.0"/>
+                    <line x1="162.4" y1="136.0" x2="157.2" y2="133.0"/>
+                    <line x1="136.0" y1="162.4" x2="133.0" y2="157.2"/>
+                    <line x1="64.0" y1="162.4" x2="67.0" y2="157.2"/>
+                    <line x1="37.6" y1="136.0" x2="42.8" y2="133.0"/>
+                    <line x1="37.6" y1="64.0" x2="42.8" y2="67.0"/>
+                    <line x1="64.0" y1="37.6" x2="67.0" y2="42.8"/>
+                </g>
+            </svg>
+
             <div class="north">N</div>
             <div class="north-east">NO</div>
             <div class="east">O</div>
@@ -84,17 +120,19 @@
 
                 <svg viewBox="0 0 100 100">
 
+                    <!-- Schaft des Pfeils -->
                     <line
                         x1="50"
-                        y1="82"
+                        y1="88"
                         x2="50"
-                        y2="18"
+                        y2="20"
                         stroke="#d60000"
-                        stroke-width="6"
+                        stroke-width="8"
                         stroke-linecap="round"/>
 
+                    <!-- Pfeilspitze -->
                     <polygon
-                        points="50,8 40,26 60,26"
+                        points="50,6 34,30 66,30"
                         fill="#d60000"/>
 
                 </svg>
@@ -119,7 +157,7 @@
 
         Böen
 
-        <span id="gust">
+        <span id="gust" class="gust-value">
             --
         </span>
 
@@ -213,4 +251,10 @@
 
 </section>
 
+</main>
+
 <script src="js/app.js"></script>
+
+</body>
+
+</html>
