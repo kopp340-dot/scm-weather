@@ -89,7 +89,7 @@ body{
 
 .subtitle{
 
-    color:#666;
+    color:#1a1a1a;
 
 }
 
@@ -107,7 +107,7 @@ body{
 
     font-size:.9rem;
 
-    color:#666;
+    color:#1a1a1a;
 
 }
 
@@ -407,7 +407,7 @@ body{
 
     font-size:1.3rem;
 
-    color:#5a7a9c;
+    color:#1a1a1a;
 
     font-weight:bold;
 
@@ -471,7 +471,7 @@ body{
 
 .label{
 
-    color:#666;
+    color:#1a1a1a;font-weight:bold;
 
     margin:8px 0;
 
@@ -549,7 +549,7 @@ body{
 
     font-size:0.8rem;
 
-    color:#777;
+    color:#1a1a1a;
 
     text-align:center;
 
