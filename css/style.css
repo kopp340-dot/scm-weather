@@ -487,11 +487,21 @@ body{
 
 /* ------------------------------------------------ */
 
-.wind-link{
+.link-group{
 
-    display:block;
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
 
     margin-top:14px;
+
+}
+
+.ext-link{
+
+    flex:1 1 auto;
 
     text-align:center;
 
@@ -501,9 +511,9 @@ body{
 
     font-weight:bold;
 
-    font-size:1rem;
+    font-size:.95rem;
 
-    padding:10px;
+    padding:10px 12px;
 
     border:1px solid #005a9c;
 
@@ -511,9 +521,11 @@ body{
 
     background:rgba(255,255,255,.5);
 
+    transition:background .15s, color .15s;
+
 }
 
-.wind-link:hover{
+.ext-link:hover{
 
     background:#005a9c;
 
