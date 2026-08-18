@@ -103,7 +103,7 @@ function updateSailingLight(knots){
             "#d7ffd4";
 
     }
-    else if(knots < 20){
+    else if(knots < 25){
 
         light.textContent =
             "🟡 Starkwind";
@@ -151,7 +151,7 @@ function updateWindColor(knots){
         wind.classList.add("wind-green");
 
     }
-    else if(knots < 20){
+    else if(knots < 25){
 
         wind.classList.add("wind-orange");
 
@@ -195,7 +195,7 @@ function updateGustColor(knots){
         gust.classList.add("gust-green");
 
     }
-    else if(knots < 20){
+    else if(knots < 25){
 
         gust.classList.add("gust-orange");
 
