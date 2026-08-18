@@ -1,4 +1,4 @@
-const VERSION = "1.7";
+const VERSION = "1.9";
 
 const API_URL =
 "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
@@ -79,7 +79,7 @@ function updateSailingLight(knots){
     if(knots < 4){
 
         light.textContent =
-            "🔴 Zu wenig Wind";
+            "🔵 Zu wenig Wind";
 
         light.style.background =
             "#cce0ff";
@@ -103,10 +103,10 @@ function updateSailingLight(knots){
             "#d7ffd4";
 
     }
-    else if(knots < 20){
+    else if(knots < 25){
 
         light.textContent =
-            "🟡 Starkwind";
+            "🟠 Starkwind";
 
         light.style.background =
             "#ffe0b3";
@@ -151,7 +151,7 @@ function updateWindColor(knots){
         wind.classList.add("wind-green");
 
     }
-    else if(knots < 20){
+    else if(knots < 25){
 
         wind.classList.add("wind-orange");
 
@@ -195,7 +195,7 @@ function updateGustColor(knots){
         gust.classList.add("gust-green");
 
     }
-    else if(knots < 20){
+    else if(knots < 25){
 
         gust.classList.add("gust-orange");
 
