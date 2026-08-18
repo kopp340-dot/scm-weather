@@ -600,3 +600,72 @@ body{
     text-align:center;
 
 }
+/* ------------------------------------------------ */
+/* Sehr schmale Fenster (Mobil-Dropdown, iframe) */
+/* ------------------------------------------------ */
+
+@media(max-width:400px){
+
+.wind-number{
+
+    font-size:3.4rem;
+
+}
+
+.windrose{
+
+    width:170px;
+
+    height:170px;
+
+}
+
+.wind-arrow{
+
+    width:72px;
+
+    height:72px;
+
+    margin-left:-36px;
+
+    margin-top:-36px;
+
+}
+
+.small-card{
+
+    padding:12px 8px;
+
+}
+
+.value{
+
+    font-size:1.2rem;
+
+}
+
+.link-group{
+
+    flex-direction:column;
+
+}
+
+.ext-link{
+
+    font-size:.9rem;
+
+}
+
+.header h1{
+
+    font-size:1.5rem;
+
+}
+
+.logo{
+
+    width:50px;
+
+}
+
+}
