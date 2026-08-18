@@ -16,11 +16,11 @@ body{
 
     color:#222;
 
-    max-width:700px;
+    width:100%;max-width:100%;
 
-    margin:auto;
+    margin:0;
 
-    padding:15px;
+    padding:12px;
 
 }
 
@@ -35,8 +35,8 @@ body{
     top:0;
     left:0;
 
-    width:100vw;
-    height:100vh;
+    width:100%;
+    height:100%;
 
     object-fit:cover;
     object-position:center;
