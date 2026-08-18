@@ -1,4 +1,4 @@
-const VERSION = "1.5";
+const VERSION = "1.6";
 
 const API_URL =
 "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
@@ -82,7 +82,7 @@ function updateSailingLight(knots){
             "🔴 Zu wenig Wind";
 
         light.style.background =
-            "#ffd8d8";
+            "#cce0ff";
 
     }
     else if(knots < 8){
@@ -94,7 +94,7 @@ function updateSailingLight(knots){
             "#fff3b5";
 
     }
-    else if(knots < 20){
+    else if(knots < 15){
 
         light.textContent =
             "🟢 Gute Segelbedingungen";
@@ -103,10 +103,19 @@ function updateSailingLight(knots){
             "#d7ffd4";
 
     }
+    else if(knots < 20){
+
+        light.textContent =
+            "🟡 Starkwind";
+
+        light.style.background =
+            "#ffe0b3";
+
+    }
     else{
 
         light.textContent =
-            "🔴 Starkwind";
+            "🔴 Sturm";
 
         light.style.background =
             "#ffbcbc";
@@ -295,10 +304,17 @@ async function loadWeather() {
 
         // Zeit
 
+        // Zeitstempel in lokaler Zeit (Europe/Vienna) anzeigen
+        const ts = new Date(json.timestamps[0]);
         document.getElementById("timestamp").textContent =
-            json.timestamps[0]
-                .replace("T", " ")
-                .substring(0,16);
+            ts.toLocaleString("de-AT", {
+                timeZone: "Europe/Vienna",
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
 
         // Segelampel
 
