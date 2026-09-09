@@ -389,10 +389,38 @@ async function loadWeather() {
 document.getElementById("version").textContent =
     "SCM Live-Wetter · Version " + VERSION + " · © 2026 Segelclub Mattsee";
 
+// Synchronisiertes Laden (2 Minuten nach GeoSphere-Update)
+function scheduleWeatherUpdate() {
+    const now = new Date();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+
+    // Berechne die nächste volle 10-Minuten-Marke + 2 Minuten Offset
+    const nextFullTenMinutes = Math.ceil(minutes / 10) * 10;
+    let targetMinutes = nextFullTenMinutes + 2;
+    if (targetMinutes >= 60) targetMinutes -= 60;
+
+    // Wartezeit bis zum nächsten Zielzeitpunkt
+    let waitMinutes = targetMinutes - minutes;
+    if (waitMinutes < 0) waitMinutes += 60;
+    let waitSeconds = waitMinutes * 60 - seconds;
+
+    // Sofort laden, wenn wir bereits im richtigen Fenster sind
+    if (waitSeconds <= 0) {
+        loadWeather();
+        setInterval(loadWeather, REFRESH_INTERVAL);
+    } else {
+        // Warte bis zum Zielzeitpunkt, dann starte Intervall
+        setTimeout(() => {
+            loadWeather();
+            setInterval(loadWeather, REFRESH_INTERVAL);
+        }, waitSeconds * 1000);
+    }
+}
+
 // Webcam einmal laden und stündlich aktualisieren
 updateWebcam();
 setInterval(updateWebcam, WEBCAM_INTERVAL);
 
-loadWeather();
-
-setInterval(loadWeather, REFRESH_INTERVAL);
+// Synchronisiertes Wetterdaten-Laden starten
+scheduleWeatherUpdate();
