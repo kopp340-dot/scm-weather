@@ -3,7 +3,7 @@ const VERSION = "2.0";
 const API_URL =
 "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
 
-const REFRESH_INTERVAL = 60000;
+const REFRESH_INTERVAL = 600000;
 
 // Panorama-Kamera (Segelclub Mattsee)
 const WEBCAM_URL = "https://scmattsee.panocloud.webcam/current1.jpg";
@@ -72,58 +72,39 @@ function updateCountdown() {
 setInterval(updateCountdown, 30000);
 updateCountdown();
 
-function updateSailingLight(knots, gust = null){
+function updateSailingLight(knots, gust = null) {
 
-    const light =
-        document.getElementById("sailingLight");
+    const light = document.getElementById("sailingLight");
 
-    // Hilfsfunktion zur Bestimmung des Textes
-    function getWindText(k) {
-        if(k < 3) return "Windstille";
-        else if(k < 10) return "Leichtwind";
-        else if(k < 15) return "Ideal";
-        else if(k < 20) return "Frischer Wind";
-        else if(k < 25) return "Starkwind";
-        else if(k < 30) return "Warnung";
-        else return "Sturm";
+    // Hilfsfunktion zur Bestimmung des Textes und der Farbe
+    function getWindInfo(k) {
+        if(k < 3) return { text: "Windstille", color: "#e6f7ff" };
+        else if(k < 10) return { text: "Leichtwind", color: "#0099ff" };
+        else if(k < 15) return { text: "Ideal", color: "#00ff99" };
+        else if(k < 20) return { text: "Frischer Wind", color: "#ffff00" };
+        else if(k < 25) return { text: "Starkwind", color: "#ff9900" };
+        else if(k < 30) return { text: "Warnung", color: "#ff3300" };
+        else return { text: "Sturm", color: "#cc0000" };
     }
 
-    // Wind-Text
-    const windText = getWindText(knots);
+    // Wind-Info
+    const windInfo = getWindInfo(knots);
 
-    // Böen-Text nur anzeigen, wenn sie abweichen
-    let displayText = windText;
+    // Böen-Info
+    let displayText = windInfo.text;
+    let background = windInfo.color;
+
     if (gust !== null && gust !== undefined) {
-        const gustText = getWindText(gust);
-        if (windText !== gustText) {
-            displayText = windText + " – Böen: " + gustText;
+        const gustInfo = getWindInfo(gust);
+        if (windInfo.text !== gustInfo.text) {
+            displayText = windInfo.text + " – Böen: " + gustInfo.text;
+            // Zweifarbig: Gradient von Windfarbe zu Böenfarbe
+            background = `linear-gradient(to right, ${windInfo.color}, ${gustInfo.color})`;
         }
     }
 
-    // Hintergrundfarbe basierend auf Wind
-    if(knots < 3){
-        light.style.background = "#e6f7ff";
-    }
-    else if(knots < 10){
-        light.style.background = "#0099ff";
-    }
-    else if(knots < 15){
-        light.style.background = "#00ff99";
-    }
-    else if(knots < 20){
-        light.style.background = "#ffff00";
-    }
-    else if(knots < 25){
-        light.style.background = "#ff9900";
-    }
-    else if(knots < 30){
-        light.style.background = "#ff3300";
-    }
-    else{
-        light.style.background = "#cc0000";
-    }
-
     light.textContent = displayText;
+    light.style.background = background;
 
 }
 
