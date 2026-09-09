@@ -18,7 +18,8 @@ SCM-Homepage eingebettet und funktioniert auch auf dem Smartphone (Vollbild).
 - **Windrose / Kompass** mit echten Skalenstrichen (Haupt-/Neben-/Feinstriche),
   hervorgehobenem Nord (N in Rot) und Pfeil in Windrichtung
 - **Böen** (Windspitze) mit eigener Farbampel (gleiche Schwellen wie Wind: Windstille – Böen, Leichtwind – Böen, Ideal – Böen, etc.)
-- **Segelampel** mit Windfinder-Farben (bis 50 kt) und angepassten Texten
+- **Segelampel** mit Windfinder-Farben (bis 50 kt) und angepassten Texten, **zweifarbig bei abweichenden Böen** (Gradient von Wind- zu Böenfarbe)
+- **Wind-Trend** (↑/↓/→) für die letzte Stunde (grün = Wind nimmt zu, rot = Wind nimmt ab, grau = stabil)
 
 ### Segelampel (Schwellen)
 | Anzeige | Windstärke | Farbe |
@@ -44,7 +45,7 @@ SCM-Homepage eingebettet und funktioniert auch auf dem Smartphone (Vollbild).
   - Wetterwarnungen → https://warnungen.zamg.at/
 
 ### Allgemein
-- Automatische Aktualisierung der Wetterdaten alle 60 Sekunden
+- Automatische Aktualisierung der Wetterdaten **alle 10 Minuten** (passend zu GeoSphere-Update-Zyklus)
 - Responsives Layout (Desktop, Tablet, Smartphone)
 - Halbtransparente Karten, damit das Webcam-Bild durchscheint
 - iframe-tauglich (volle Breite, kein Frame-Sperre)
@@ -142,6 +143,9 @@ Aktuell: **2.1**
 ### v2.1 (2025)
 - Segelampel-Farben und -Texte an Windfinder angepasst (bis 50 kt)
 - Link "Weitere Wind-Infos" auf Lukes GeosphereGraph-Dashboard aktualisiert
+- **Zweifarbige Segelampel** bei abweichenden Böen (Gradient)
+- **Wind-Trend-Anzeige** (↑/↓/→) für die letzte Stunde
+- Datenabruf auf **10-Minuten-Intervall** angepasst
 
 ### v2.0 (2025)
 - Erste stabile Version mit GeoSphere-Daten, Segelampel, Windrose und Webcam-Hintergrund
