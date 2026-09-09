@@ -71,73 +71,58 @@ function updateCountdown() {
 
 setInterval(updateCountdown,1000);
 
-function updateSailingLight(knots){
+function updateSailingLight(knots, gust = null){
 
     const light =
         document.getElementById("sailingLight");
 
+    // Hilfsfunktion zur Bestimmung des Textes
+    function getWindText(k) {
+        if(k < 3) return "Windstille";
+        else if(k < 10) return "Leichtwind";
+        else if(k < 15) return "Ideal";
+        else if(k < 20) return "Frischer Wind";
+        else if(k < 25) return "Starkwind";
+        else if(k < 30) return "Warnung";
+        else return "Sturm";
+    }
+
+    // Wind-Text
+    const windText = getWindText(knots);
+
+    // Böen-Text nur anzeigen, wenn sie abweichen
+    let displayText = windText;
+    if (gust !== null && gust !== undefined) {
+        const gustText = getWindText(gust);
+        if (windText !== gustText) {
+            displayText = windText + " – Böen: " + gustText;
+        }
+    }
+
+    // Hintergrundfarbe basierend auf Wind
     if(knots < 3){
-
-        light.textContent =
-            "Windstille";
-
-        light.style.background =
-            "#e6f7ff";
-
+        light.style.background = "#e6f7ff";
     }
     else if(knots < 10){
-
-        light.textContent =
-            "Leichtwind";
-
-        light.style.background =
-            "#0099ff";
-
+        light.style.background = "#0099ff";
     }
     else if(knots < 15){
-
-        light.textContent =
-            "Ideal";
-
-        light.style.background =
-            "#00ff99";
-
+        light.style.background = "#00ff99";
     }
     else if(knots < 20){
-
-        light.textContent =
-            "Frischer Wind";
-
-        light.style.background =
-            "#ffff00";
-
+        light.style.background = "#ffff00";
     }
     else if(knots < 25){
-
-        light.textContent =
-            "Starkwind";
-
-        light.style.background =
-            "#ff9900";
-
+        light.style.background = "#ff9900";
     }
     else if(knots < 30){
-
-        light.textContent =
-            "Warnung";
-
-        light.style.background =
-            "#ff3300";
-
+        light.style.background = "#ff3300";
     }
     else{
-
-        light.textContent =
-            "Sturm";
-
-        light.style.background =
-            "#cc0000";
+        light.style.background = "#cc0000";
     }
+
+    light.textContent = displayText;
 
 }
 
@@ -356,7 +341,7 @@ async function loadWeather() {
 
         // Segelampel
 
-        updateSailingLight(wind);
+        updateSailingLight(wind, gust);
 
         // Countdown zurücksetzen
 
