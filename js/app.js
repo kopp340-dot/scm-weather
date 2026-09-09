@@ -76,49 +76,67 @@ function updateSailingLight(knots){
     const light =
         document.getElementById("sailingLight");
 
-    if(knots < 4){
+    if(knots < 3){
 
         light.textContent =
-            "🔵 Zu wenig Wind";
+            "Windstille";
 
         light.style.background =
-            "#cce0ff";
+            "#e6f7ff";
 
     }
-    else if(knots < 8){
+    else if(knots < 10){
 
         light.textContent =
-            "🟡 Leichtwind";
+            "Leichtwind";
 
         light.style.background =
-            "#fff3b5";
+            "#0099ff";
 
     }
     else if(knots < 15){
 
         light.textContent =
-            "🟢 Gute Segelbedingungen";
+            "Ideal";
 
         light.style.background =
-            "#d7ffd4";
+            "#00ff99";
+
+    }
+    else if(knots < 20){
+
+        light.textContent =
+            "Frischer Wind";
+
+        light.style.background =
+            "#ffff00";
 
     }
     else if(knots < 25){
 
         light.textContent =
-            "🟠 Starkwind";
+            "Starkwind";
 
         light.style.background =
-            "#ffe0b3";
+            "#ff9900";
+
+    }
+    else if(knots < 30){
+
+        light.textContent =
+            "Warnung";
+
+        light.style.background =
+            "#ff3300";
 
     }
     else{
 
         light.textContent =
-            "🔴 Sturm";
+            "Sturm";
 
         light.style.background =
-            "#ffbcbc";
+            "#cc0000";
     }
 
 }
@@ -136,14 +154,14 @@ function updateWindColor(knots){
         "wind-red"
     );
 
-    if(knots < 4){
+    if(knots < 3){
 
         wind.classList.add("wind-blue");
 
     }
-    else if(knots < 8){
+    else if(knots < 10){
 
-        wind.classList.add("wind-yellow");
+        wind.classList.add("wind-blue");
 
     }
     else if(knots < 15){
@@ -151,9 +169,19 @@ function updateWindColor(knots){
         wind.classList.add("wind-green");
 
     }
+    else if(knots < 20){
+
+        wind.classList.add("wind-yellow");
+
+    }
     else if(knots < 25){
 
         wind.classList.add("wind-orange");
+
+    }
+    else if(knots < 30){
+
+        wind.classList.add("wind-red");
 
     }
     else{
@@ -180,14 +208,14 @@ function updateGustColor(knots){
         "gust-red"
     );
 
-    if(knots < 4){
+    if(knots < 3){
 
         gust.classList.add("gust-blue");
 
     }
-    else if(knots < 8){
+    else if(knots < 10){
 
-        gust.classList.add("gust-yellow");
+        gust.classList.add("gust-blue");
 
     }
     else if(knots < 15){
@@ -195,9 +223,19 @@ function updateGustColor(knots){
         gust.classList.add("gust-green");
 
     }
+    else if(knots < 20){
+
+        gust.classList.add("gust-yellow");
+
+    }
     else if(knots < 25){
 
         gust.classList.add("gust-orange");
+
+    }
+    else if(knots < 30){
+
+        gust.classList.add("gust-red");
 
     }
     else{
