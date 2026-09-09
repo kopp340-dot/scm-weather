@@ -2,7 +2,7 @@
 
 Live-Wetter-Dashboard des **Segelclub Mattsee (SCM)**. Es zeigt aktuelle
 Wind-, Böen- und Wetterdaten der GeoSphere-Messstation Mattsee in einer für
-den Segelbetrieb optimierten Ansicht — mit Panorama-Kamerabild als Hintergrund.
+den Segelbetrieb optimierten Ansicht – mit Panorama-Kamerabild als Hintergrund.
 
 Die Seite ist eine statische Web-App (HTML/CSS/JavaScript) und wird über
 GitHub Pages ausgeliefert. Sie ist als iframe im rechten Fenster der
@@ -14,20 +14,22 @@ SCM-Homepage eingebettet und funktioniert auch auf dem Smartphone (Vollbild).
 
 ### Wind
 - **Live-Wind** in Knoten mit Beaufort-Anzeige
-- **Farbliche Windampel** je nach Windstärke (blau/gelb/grün/orange/rot)
+- **Farbliche Windampel** je nach Windstärke (Windfinder-ähnliche Farben: hellblau, blau, hellgrün, gelb, orange, rot, dunkelrot)
 - **Windrose / Kompass** mit echten Skalenstrichen (Haupt-/Neben-/Feinstriche),
   hervorgehobenem Nord (N in Rot) und Pfeil in Windrichtung
 - **Böen** (Windspitze) mit eigener Farbampel
-- **Segelampel** mit Emoji-Farben passend zur Windstärke
+- **Segelampel** mit Windfinder-Farben (bis 50 kt) und angepassten Texten
 
 ### Segelampel (Schwellen)
 | Anzeige | Windstärke | Farbe |
 |---------|------------|------|
-| 🔵 Zu wenig Wind | < 4 kt | blau |
-| 🟡 Leichtwind | 4–8 kt | gelb |
-| 🟢 Gute Segelbedingungen | 8–15 kt | grün |
-| 🟠 Starkwind | 15–25 kt | orange |
-| 🔴 Sturm | ab 25 kt | rot |
+| Windstille | < 3 kt | Hellblau (`#e6f7ff`) |
+| Leichtwind | 3–10 kt | Blau (`#0099ff`) |
+| Ideal | 10–15 kt | Hellgrün (`#00ff99`) |
+| Frischer Wind | 15–20 kt | Gelb (`#ffff00`) |
+| Starkwind | 20–25 kt | Orange (`#ff9900`) |
+| Warnung | 25–30 kt | Rot (`#ff3300`) |
+| Sturm | ≥ 30 kt | Dunkelrot (`#cc0000`) |
 
 ### Wetterdaten
 - Temperatur, Luftfeuchte, Luftdruck, Niederschlag
@@ -37,7 +39,7 @@ SCM-Homepage eingebettet und funktioniert auch auf dem Smartphone (Vollbild).
 - **Panorama-Kamera** des Segelclub Mattsee als fixer Hintergrund
   (stündliche Aktualisierung)
 - **Externe Links** unter der Segelampel:
-  - Weitere Wind-Infos → https://www.segelclub-mattsee.at/8518-2/
+  - Weitere Wind-Infos → https://luke-ff.github.io/GeosphereGraph/ (Windfinder-ähnliches Dashboard)
   - Wasserstand & Temp. → https://www.salzburg.gv.at/wasser/hydro/#/Seen?station=203604
   - Wetterwarnungen → https://warnungen.zamg.at/
 
@@ -75,7 +77,7 @@ Das Panorama-Bild der SCM-Webcam wird von
 ## Einbindung in die SCM-Homepage
 
 Die Wetterseite ist als iframe im rechten Fenster der SCM-Homepage eingebettet
-(Menüpunkt „Live-Wetter Mattsee", vormals „Wetterdaten Geosphere Mattsee").
+(Menüpunkt „Live-Wetter Mattsee“, vormals „Wetterdaten Geosphere Mattsee“).
 
 ### Iframe-Code
 
@@ -133,7 +135,16 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **2.0**
+Aktuell: **2.1**
+
+## Changelog
+
+### v2.1 (2025)
+- Segelampel-Farben und -Texte an Windfinder angepasst (bis 50 kt)
+- Link "Weitere Wind-Infos" auf Lukes GeosphereGraph-Dashboard aktualisiert
+
+### v2.0 (2025)
+- Erste stabile Version mit GeoSphere-Daten, Segelampel, Windrose und Webcam-Hintergrund
 
 ## Lizenz
 
