@@ -422,5 +422,6 @@ function scheduleWeatherUpdate() {
 updateWebcam();
 setInterval(updateWebcam, WEBCAM_INTERVAL);
 
-// Synchronisiertes Wetterdaten-Laden starten
+// Sofort laden und dann synchronisiert weitermachen
+loadWeather();
 scheduleWeatherUpdate();
