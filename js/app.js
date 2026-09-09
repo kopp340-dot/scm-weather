@@ -11,6 +11,8 @@ const WEBCAM_URL = "https://scmattsee.panocloud.webcam/current1.jpg";
 const WEBCAM_INTERVAL = 3600000;
 
 let nextUpdateInMinutes = 10;
+let lastWindValue = null;
+let lastWindTime = null;
 
 // ----------------------------------------------------
 // Hilfsfunktionen
@@ -52,6 +54,40 @@ function windDirection(deg) {
     ];
 
     return dirs[Math.round(deg / 45) % 8];
+}
+
+// Trend-Anzeige für Wind
+function updateWindTrend(currentWind) {
+    const trendElement = document.getElementById("windTrend");
+    if (!trendElement) return;
+
+    if (lastWindValue === null || lastWindTime === null) {
+        trendElement.textContent = "";
+        trendElement.style.color = "";
+    } else {
+        const now = new Date();
+        const timeDiffMs = now - lastWindTime;
+        const timeDiffHours = timeDiffMs / (1000 * 60 * 60);
+
+        if (timeDiffHours < 1) {
+            const trend = currentWind - lastWindValue;
+            if (trend > 0.5) {
+                trendElement.textContent = " ↑";
+                trendElement.style.color = "#009933";
+            } else if (trend < -0.5) {
+                trendElement.textContent = " ↓";
+                trendElement.style.color = "#cc0000";
+            } else {
+                trendElement.textContent = " →";
+                trendElement.style.color = "#666666";
+            }
+        } else {
+            trendElement.textContent = "";
+            trendElement.style.color = "";
+        }
+    }
+    lastWindValue = currentWind;
+    lastWindTime = new Date();
 }
 
 function updateCountdown() {
@@ -268,6 +304,7 @@ async function loadWeather() {
 
         document.getElementById("wind").textContent =
             wind.toFixed(1);
+        updateWindTrend(wind);
 
         document.getElementById("gust").textContent =
             gust.toFixed(1) + " kt";
