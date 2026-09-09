@@ -17,7 +17,7 @@ SCM-Homepage eingebettet und funktioniert auch auf dem Smartphone (Vollbild).
 - **Farbliche Windampel** je nach Windstärke (Windfinder-ähnliche Farben: hellblau, blau, hellgrün, gelb, orange, rot, dunkelrot)
 - **Windrose / Kompass** mit echten Skalenstrichen (Haupt-/Neben-/Feinstriche),
   hervorgehobenem Nord (N in Rot) und Pfeil in Windrichtung
-- **Böen** (Windspitze) mit eigener Farbampel (gleiche Schwellen wie Wind: Windstille – Böen Leichtwind, etc.)
+- **Böen** (Windspitze) mit eigener Farbampel (gleiche Schwellen wie Wind: Windstille – Böen, Leichtwind – Böen, Ideal – Böen, etc.)
 - **Segelampel** mit Windfinder-Farben (bis 50 kt) und angepassten Texten
 
 ### Segelampel (Schwellen)
