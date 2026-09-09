@@ -10,7 +10,7 @@ const WEBCAM_URL = "https://scmattsee.panocloud.webcam/current1.jpg";
 // Stündliche Aktualisierung des Hintergrundbilds
 const WEBCAM_INTERVAL = 3600000;
 
-let secondsRemaining = 60;
+let nextUpdateInMinutes = 10;
 
 // ----------------------------------------------------
 // Hilfsfunktionen
@@ -55,21 +55,22 @@ function windDirection(deg) {
 }
 
 function updateCountdown() {
-
-    document.getElementById("refreshInfo").textContent =
-        "Nächste Aktualisierung in " +
-        secondsRemaining +
-        " s";
-
-    secondsRemaining--;
-
-    if (secondsRemaining < 0) {
-        secondsRemaining = 60;
+    const now = new Date();
+    const nextUpdate = new Date(Math.ceil(now.getTime() / 600000) * 600000);
+    const diffMs = nextUpdate - now;
+    nextUpdateInMinutes = Math.ceil(diffMs / 60000);
+    
+    if (nextUpdateInMinutes === 0) {
+        document.getElementById("refreshInfo").textContent = "Aktualisierung jetzt...";
+    } else {
+        document.getElementById("refreshInfo").textContent = 
+            "Nächste Aktualisierung in " + nextUpdateInMinutes + " Min.";
     }
-
 }
 
-setInterval(updateCountdown,1000);
+// Alle 30 Sekunden aktualisieren
+setInterval(updateCountdown, 30000);
+updateCountdown();
 
 function updateSailingLight(knots, gust = null){
 
@@ -345,7 +346,7 @@ async function loadWeather() {
 
         // Countdown zurücksetzen
 
-        secondsRemaining = 60;
+        nextUpdateInMinutes = 10;
 
     }
 
