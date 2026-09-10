@@ -4,7 +4,7 @@
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.16";
+const VERSION = "3.17";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -26,6 +26,11 @@ let pressureHistory = [];
 const MAX_WIND_HISTORY = 6;    // 1 Stunde (6 * 10 Min)
 const MAX_TEMP_HISTORY = 18;   // 3 Stunden (18 * 10 Min)
 const MAX_PRESSURE_HISTORY = 18;
+
+// Fallback-Daten für API-Ausfälle
+let lastWeatherData = null;
+let lastFetchTime = 0;
+const FALLBACK_TIMEOUT = 300000; // 5 Minuten
 
 // ====================================================
 // HILFSFUNKTIONEN
@@ -343,6 +348,80 @@ function updateGustColor(knots) {
 /**
  * Wetterdaten von GeoSphere laden
  */
+// ====================================================
+// FALLBACK-FUNKTION
+// ====================================================
+
+/**
+ * Zeigt Fallback-Daten an, wenn API nicht erreichbar
+ */
+function renderFallbackData(json) {
+    document.getElementById("liveStatus").textContent = "\ud83d\udfe2 LIVE (Fallback)";
+    
+    const p = json.features[0].properties.parameters;
+    const wind = msToKnots(p.FF.data[0]);
+    const gust = msToKnots(p.FFX.data[0]);
+    const dir = p.DD.data[0];
+    const ts = new Date(json.timestamps[0]);
+
+    // Wind
+    const windElement = document.getElementById("wind");
+    if (windElement) {
+        windElement.textContent = wind.toFixed(1);
+        updateWindColor(wind);
+    }
+
+    // Böen
+    const gustElement = document.getElementById("gust");
+    if (gustElement) {
+        gustElement.textContent = gust.toFixed(1) + " kt";
+        updateGustColor(gust);
+    }
+
+    // Beaufort
+    const beaufortElement = document.getElementById("beaufort");
+    if (beaufortElement) {
+        beaufortElement.textContent = knotsToBeaufort(wind) + " Bft";
+    }
+
+    // Windrichtung
+    const directionValue = document.getElementById("directionValue");
+    const directionText = document.getElementById("directionText");
+    const windArrow = document.getElementById("windArrow");
+    if (directionValue) directionValue.textContent = Math.round(dir) + "\u00b0";
+    if (directionText) directionText.textContent = windDirection(dir);
+    if (windArrow) windArrow.style.transform = `rotate(${(dir + 180) % 360}deg)`;
+
+    // Wetterdaten
+    const tempElement = document.getElementById("temperature");
+    if (tempElement) tempElement.textContent = p.TL.data[0].toFixed(1) + " \u00b0C";
+
+    const pressureElement = document.getElementById("pressure");
+    if (pressureElement) pressureElement.textContent = p.P.data[0].toFixed(1) + " hPa";
+
+    const humidityElement = document.getElementById("humidity");
+    if (humidityElement) humidityElement.textContent = p.RF.data[0].toFixed(0) + " %";
+
+    const rainElement = document.getElementById("rain");
+    if (rainElement) rainElement.textContent = p.RR.data[0].toFixed(1) + " mm";
+
+    // Zeitstempel
+    const timestampElement = document.getElementById("timestamp");
+    if (timestampElement) {
+        timestampElement.textContent = ts.toLocaleString("de-AT", {
+            timeZone: "Europe/Vienna",
+            day: "2-digit", month: "2-digit", year: "numeric",
+            hour: "2-digit", minute: "2-digit"
+        }) + " (Fallback)";
+    }
+
+    // Segelampel
+    updateSailingLight(wind, gust);
+    
+    // Info
+    document.getElementById("refreshInfo").textContent = "Verwende letzte gültige Daten (API temporär nicht erreichbar)";
+}
+
 async function loadWeather() {
     try {
         document.getElementById("liveStatus").textContent = "🟢 LIVE";
@@ -431,11 +510,23 @@ async function loadWeather() {
 
         // --- SEGELAMPEL ---
         updateSailingLight(wind, gust);
+        
+        // Speichere Daten für Fallback
+        lastWeatherData = json;
+        lastFetchTime = Date.now();
 
     } catch (err) {
         console.error("GeoSphere Fehler:", err);
-        document.getElementById("liveStatus").textContent = "🔴 OFFLINE";
-        document.getElementById("refreshInfo").textContent = "Verbindung zur GeoSphere fehlgeschlagen.";
+        
+        // Fallback: Verwende letzte Daten, wenn verfügbar und nicht zu alt
+        const now = Date.now();
+        if (lastWeatherData && (now - lastFetchTime) < FALLBACK_TIMEOUT) {
+            console.log("Verwende Fallback-Daten (API nicht erreichbar)");
+            renderFallbackData(lastWeatherData);
+        } else {
+            document.getElementById("liveStatus").textContent = "\ud83d\udd34 OFFLINE";
+            document.getElementById("refreshInfo").textContent = "Verbindung zur GeoSphere fehlgeschlagen. Warte auf Reset...";
+        }
     }
 }
 
