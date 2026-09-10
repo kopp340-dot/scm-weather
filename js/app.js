@@ -1,4 +1,4 @@
-const VERSION = "2.0";
+const VERSION = "3.0";
 
 const API_URL =
 "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
@@ -442,10 +442,44 @@ async function loadWeather() {
 
         document.getElementById("wind").textContent =
             wind.toFixed(1);
+        // Wind-Wert in der gleichen Farbe wie die Wind-Anzeige
+        const windElement = document.getElementById("wind");
+        if (wind < 3) {
+            windElement.classList.add("wind-blue");
+        } else if (wind < 10) {
+            windElement.classList.add("wind-blue");
+        } else if (wind < 15) {
+            windElement.classList.add("wind-green");
+        } else if (wind < 20) {
+            windElement.classList.add("wind-yellow");
+        } else if (wind < 25) {
+            windElement.classList.add("wind-orange");
+        } else if (wind < 30) {
+            windElement.classList.add("wind-red");
+        } else {
+            windElement.classList.add("wind-red");
+        }
         updateWindTrend(wind);
 
         document.getElementById("gust").textContent =
             gust.toFixed(1) + " kt";
+        // Böen-Wert in der gleichen Farbe wie die Böen-Anzeige
+        const gustElement = document.getElementById("gust");
+        if (gust < 3) {
+            gustElement.classList.add("gust-blue");
+        } else if (gust < 10) {
+            gustElement.classList.add("gust-blue");
+        } else if (gust < 15) {
+            gustElement.classList.add("gust-green");
+        } else if (gust < 20) {
+            gustElement.classList.add("gust-yellow");
+        } else if (gust < 25) {
+            gustElement.classList.add("gust-orange");
+        } else if (gust < 30) {
+            gustElement.classList.add("gust-red");
+        } else {
+            gustElement.classList.add("gust-red");
+        }
 
         document.getElementById("beaufort").textContent =
             knotsToBeaufort(wind) + " Bft";
