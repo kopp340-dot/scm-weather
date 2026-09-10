@@ -964,14 +964,13 @@ body{
 
 }
 
-/* Wind- und Böen-Anzeige in gleichem Format wie wind-number */
-#wind, #gust {
-    font-size: 4.5rem;
-    font-weight: bold;
-    line-height: 1;
-}
 
 /* Böen-Text farbig (wird per JS gesetzt) */
 .gust-box .gust-label {
+    color: inherit;
+}
+
+/* Wind- und Böen-Werte farbig (Größe bleibt Original) */
+#wind, #gust, .wind-unit {
     color: inherit;
 }
