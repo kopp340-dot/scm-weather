@@ -4,7 +4,7 @@
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.19";
+const VERSION = "3.20";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -430,6 +430,17 @@ function renderFallbackData(json) {
     
     // Info
     document.getElementById("refreshInfo").textContent = "Verwende letzte gültige Daten (API temporär nicht erreichbar)";
+    // Aktualisiere Trends mit den Daten aus dem Fallback
+    if (windElement) {
+        updateWindTrend(wind);
+    }
+    if (tempElement) {
+        updateTempTrend(p.TL.data[0]);
+    }
+    if (pressureElement) {
+        updatePressureTrend(p.P.data[0]);
+    }
+
 }
 
 async function loadWeather() {
@@ -466,6 +477,55 @@ async function loadWeather() {
             });
             
             console.log("Historie geladen:", windHistory.length, "Wind-Datenpunkte");
+            // Initialisiere Trends mit historischen Daten
+            if (ffValues.length >= 2) {
+                const first = ffValues[0];
+                const last = ffValues[ffValues.length - 1];
+                const timeDiffHours = (last.time - first.time) / (1000 * 60 * 60);
+                const valueDiff = msToKnots(last.value) - msToKnots(first.value);
+                const trendPerHour = valueDiff / timeDiffHours;
+                if (Math.abs(trendPerHour) >= 0.1) {
+                    const windTrend = document.getElementById("windTrend");
+                    if (windTrend) {
+                        const color = trendPerHour > 0.1 ? "#009933" : (trendPerHour < -0.1 ? "#cc0000" : "#666666");
+                        const arrow = trendPerHour > 0.1 ? "↑" : (trendPerHour < -0.1 ? "↓" : "→");
+                        windTrend.innerHTML = `<span style="color: ${color}; font-size: 1.2rem;">${arrow}</span>`;
+                    }
+                }
+            }
+            
+            if (tlValues.length >= 2) {
+                const first = tlValues[0];
+                const last = tlValues[tlValues.length - 1];
+                const timeDiffHours = (last.time - first.time) / (1000 * 60 * 60);
+                const valueDiff = last.value - first.value;
+                const trendPerHour = valueDiff / timeDiffHours;
+                if (Math.abs(trendPerHour) >= 0.5) {
+                    const tempTrend = document.getElementById("tempTrend");
+                    if (tempTrend) {
+                        const color = trendPerHour > 0.5 ? "#009933" : (trendPerHour < -0.5 ? "#cc0000" : "#666666");
+                        const arrow = trendPerHour > 0.5 ? "↑" : (trendPerHour < -0.5 ? "↓" : "→");
+                        tempTrend.innerHTML = `<span style="color: ${color}; font-size: 1.2rem;">${arrow}</span>`;
+                    }
+                }
+            }
+            
+            if (pValues.length >= 2) {
+                const first = pValues[0];
+                const last = pValues[pValues.length - 1];
+                const timeDiffHours = (last.time - first.time) / (1000 * 60 * 60);
+                const valueDiff = last.value - first.value;
+                const trendPerHour = valueDiff / timeDiffHours;
+                if (Math.abs(trendPerHour) >= 1) {
+                    const pressureTrend = document.getElementById("pressureTrend");
+                    if (pressureTrend) {
+                        const color = trendPerHour > 1 ? "#009933" : (trendPerHour < -1 ? "#cc0000" : "#666666");
+                        const arrow = trendPerHour > 1 ? "↑" : (trendPerHour < -1 ? "↓" : "→");
+                        pressureTrend.innerHTML = `<span style="color: ${color}; font-size: 1.2rem;">${arrow}</span>`;
+                    }
+                }
+            }
+
         }
     }
     
