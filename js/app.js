@@ -16,6 +16,14 @@ let lastWindTime = null;
 let lastTempValue = null;
 let lastPressureValue = null;
 
+// Historie für Trend-Berechnung (1h für Wind, 3h für Temp/Druck)
+let windHistory = [];
+let tempHistory = [];
+let pressureHistory = [];
+const MAX_WIND_HISTORY = 6;   // 1 Stunde (6 * 10 Min)
+const MAX_TEMP_HISTORY = 18;  // 3 Stunden (18 * 10 Min)
+const MAX_PRESSURE_HISTORY = 18;
+
 // ----------------------------------------------------
 // Hilfsfunktionen
 // ----------------------------------------------------
@@ -58,104 +66,125 @@ function windDirection(deg) {
     return dirs[Math.round(deg / 45) % 8];
 }
 
-// Trend-Anzeige für Wind
+// Trend-Anzeige für Wind (Mini-Graphik, 1h Historie)
 function updateWindTrend(currentWind) {
-    const trendElement = document.getElementById("windTrend");
-    if (!trendElement) return;
+    const container = document.getElementById("windTrend");
+    if (!container) return;
 
-    if (lastWindValue === null || lastWindTime === null) {
-        trendElement.textContent = "";
-        trendElement.style.color = "";
-    } else {
-        const now = new Date();
-        const timeDiffMs = now - lastWindTime;
-        const timeDiffHours = timeDiffMs / (1000 * 60 * 60);
-
-        if (timeDiffHours < 1) {
-            const trend = currentWind - lastWindValue;
-            if (trend > 0.5) {
-                trendElement.textContent = " ↑";
-                trendElement.style.color = "#009933";
-            } else if (trend < -0.5) {
-                trendElement.textContent = " ↓";
-                trendElement.style.color = "#cc0000";
-            } else {
-                trendElement.textContent = " →";
-                trendElement.style.color = "#666666";
-            }
-        } else {
-            trendElement.textContent = "";
-            trendElement.style.color = "";
-        }
+    // Wert zur Historie hinzufügen
+    windHistory.push({ value: currentWind, time: new Date() });
+    if (windHistory.length > MAX_WIND_HISTORY) {
+        windHistory.shift();
     }
-    lastWindValue = currentWind;
-    lastWindTime = new Date();
+
+    // Trend berechnen (nur wenn genug Daten da sind)
+    if (windHistory.length >= 2) {
+        const first = windHistory[0];
+        const last = windHistory[windHistory.length - 1];
+        const timeDiffHours = (last.time - first.time) / (1000 * 60 * 60);
+        const valueDiff = last.value - first.value;
+        const trendPerHour = valueDiff / timeDiffHours;
+
+        // Mini-Graphik generieren
+        renderTrendGraph(container, windHistory, trendPerHour, 0.3);
+    } else {
+        container.innerHTML = "";
+    }
 }
 
-// Trend-Anzeige für Temperatur
+// Trend-Anzeige für Temperatur (Mini-Graphik, 3h Historie)
 function updateTempTrend(currentTemp) {
-    const trendElement = document.getElementById("tempTrend");
-    if (!trendElement) return;
+    const container = document.getElementById("tempTrend");
+    if (!container) return;
 
-    if (lastTempValue === null) {
-        trendElement.textContent = "";
-        trendElement.style.color = "";
-    } else {
-        const now = new Date();
-        const timeDiffMs = now - (lastWindTime || now);
-        const timeDiffHours = timeDiffMs / (1000 * 60 * 60);
-
-        if (timeDiffHours < 1) {
-            const trend = currentTemp - lastTempValue;
-            if (trend > 0.5) {
-                trendElement.textContent = " ↑";
-                trendElement.style.color = "#009933";
-            } else if (trend < -0.5) {
-                trendElement.textContent = " ↓";
-                trendElement.style.color = "#cc0000";
-            } else {
-                trendElement.textContent = " →";
-                trendElement.style.color = "#666666";
-            }
-        } else {
-            trendElement.textContent = "";
-            trendElement.style.color = "";
-        }
+    // Wert zur Historie hinzufügen
+    tempHistory.push({ value: currentTemp, time: new Date() });
+    if (tempHistory.length > MAX_TEMP_HISTORY) {
+        tempHistory.shift();
     }
-    lastTempValue = currentTemp;
+
+    // Trend berechnen (nur wenn genug Daten da sind)
+    if (tempHistory.length >= 2) {
+        const first = tempHistory[0];
+        const last = tempHistory[tempHistory.length - 1];
+        const timeDiffHours = (last.time - first.time) / (1000 * 60 * 60);
+        const valueDiff = last.value - first.value;
+        const trendPerHour = valueDiff / timeDiffHours;
+
+        // Mini-Graphik generieren
+        renderTrendGraph(container, tempHistory, trendPerHour, 0.3);
+    } else {
+        container.innerHTML = "";
+    }
 }
 
-// Trend-Anzeige für Luftdruck
+// Trend-Anzeige für Luftdruck (Mini-Graphik, 3h Historie)
 function updatePressureTrend(currentPressure) {
-    const trendElement = document.getElementById("pressureTrend");
-    if (!trendElement) return;
+    const container = document.getElementById("pressureTrend");
+    if (!container) return;
 
-    if (lastPressureValue === null) {
-        trendElement.textContent = "";
-        trendElement.style.color = "";
-    } else {
-        const now = new Date();
-        const timeDiffMs = now - (lastWindTime || now);
-        const timeDiffHours = timeDiffMs / (1000 * 60 * 60);
-
-        if (timeDiffHours < 1) {
-            const trend = currentPressure - lastPressureValue;
-            if (trend > 1) {
-                trendElement.textContent = " ↑";
-                trendElement.style.color = "#009933";
-            } else if (trend < -1) {
-                trendElement.textContent = " ↓";
-                trendElement.style.color = "#cc0000";
-            } else {
-                trendElement.textContent = " →";
-                trendElement.style.color = "#666666";
-            }
-        } else {
-            trendElement.textContent = "";
-            trendElement.style.color = "";
-        }
+    // Wert zur Historie hinzufügen
+    pressureHistory.push({ value: currentPressure, time: new Date() });
+    if (pressureHistory.length > MAX_PRESSURE_HISTORY) {
+        pressureHistory.shift();
     }
-    lastPressureValue = currentPressure;
+
+    // Trend berechnen (nur wenn genug Daten da sind)
+    if (pressureHistory.length >= 2) {
+        const first = pressureHistory[0];
+        const last = pressureHistory[pressureHistory.length - 1];
+        const timeDiffHours = (last.time - first.time) / (1000 * 60 * 60);
+        const valueDiff = last.value - first.value;
+        const trendPerHour = valueDiff / timeDiffHours;
+
+        // Mini-Graphik generieren
+        renderTrendGraph(container, pressureHistory, trendPerHour, 1);
+    } else {
+        container.innerHTML = "";
+    }
+}
+
+// Hilfsfunktion: Mini-Trend-Graphik rendern
+function renderTrendGraph(container, history, trendPerHour, threshold) {
+    if (history.length < 2) {
+        container.innerHTML = "";
+        return;
+    }
+
+    // Normalisierte Werte für die Graphik berechnen
+    const maxVal = Math.max(...history.map(h => h.value));
+    const minVal = Math.min(...history.map(h => h.value));
+    const range = maxVal - minVal || 1;
+
+    // SVG für Mini-Graphik erstellen
+    const width = 50;
+    const height = 20;
+    const points = history.map((h, i) => {
+        const x = (i / (history.length - 1)) * width;
+        const y = height - ((h.value - minVal) / range) * height;
+        return `${x},${y}`;
+    }).join(" ");
+
+    // Trend-Farbe bestimmen
+    let color, arrow;
+    if (trendPerHour > threshold) {
+        color = "#009933"; // Grün
+        arrow = "↑";
+    } else if (trendPerHour < -threshold) {
+        color = "#cc0000"; // Rot
+        arrow = "↓";
+    } else {
+        color = "#666666"; // Grau
+        arrow = "→";
+    }
+
+    // SVG + Pfeil anzeigen
+    container.innerHTML = `
+        <svg width="${width}" height="${height}" style="vertical-align: middle; margin-right: 5px;" viewBox="0 0 ${width} ${height}">
+            <polyline fill="none" stroke="${color}" stroke-width="2" points="${points}"/>
+        </svg>
+        <span style="color: ${color}; font-size: 1.2rem;">${arrow}</span>
+    `;
 }
 
 function updateCountdown() {
