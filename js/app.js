@@ -4,11 +4,20 @@
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.18";
+const VERSION = "3.19";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
     "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
+
+// GeoSphere History API für die letzten 3 Stunden
+function getHistoryApiUrl() {
+    const now = new Date();
+    const threeHoursAgo = new Date(now.getTime() - 3 * 60 * 60 * 1000);
+    const startTime = threeHoursAgo.toISOString().replace(/\.\d{3}Z$/, 'Z');
+    const endTime = now.toISOString().replace(/\.\d{3}Z$/, 'Z');
+    return `https://dataset.api.hub.geosphere.at/v1/station/timeseries/tawes-v1-10min?station_ids=11152&parameters=FF&parameters=FFX&parameters=TL&parameters=P&start=${startTime}&end=${endTime}`;
+}
 
 // Aktualisierungsintervall: 10 Minuten (600000 ms) = GeoSphere-Update-Intervall
 const REFRESH_INTERVAL = 900000; // 15 Minuten
@@ -424,7 +433,58 @@ function renderFallbackData(json) {
 }
 
 async function loadWeather() {
+    // Lade historische Daten beim ersten Aufruf
+    if (windHistory.length === 0) {
+        const historyJson = await loadHistoryData();
+        if (historyJson) {
+            // Fülle Historie mit historischen Daten
+            const ffValues = extractHistoryValues(historyJson, 'FF');
+            const ffXValues = extractHistoryValues(historyJson, 'FFX');
+            const tlValues = extractHistoryValues(historyJson, 'TL');
+            const pValues = extractHistoryValues(historyJson, 'P');
+            
+            // Konvertiere zu Knoten für Wind
+            ffValues.forEach(h => {
+                windHistory.push({ value: msToKnots(h.value), time: h.time });
+            });
+            
+            // Für Böen (wenn FFX nicht verfügbar, verwende FF)
+            if (ffXValues.length > 0) {
+                ffXValues.forEach(h => {
+                    // Böen werden separat nicht für Trend verwendet, aber wir speichern sie
+                });
+            }
+            
+            // Temperatur-Historie
+            tlValues.forEach(h => {
+                tempHistory.push({ value: h.value, time: h.time });
+            });
+            
+            // Druck-Historie
+            pValues.forEach(h => {
+                pressureHistory.push({ value: h.value, time: h.time });
+            });
+            
+            console.log("Historie geladen:", windHistory.length, "Wind-Datenpunkte");
+        }
+    }
+    
     // Prüfe LocalStorage-Cache
+    // Lade Historie aus LocalStorage
+    const storedWindHistory = localStorage.getItem('scmWindHistory');
+    const storedTempHistory = localStorage.getItem('scmTempHistory');
+    const storedPressureHistory = localStorage.getItem('scmPressureHistory');
+    
+    if (storedWindHistory) {
+        windHistory = JSON.parse(storedWindHistory);
+    }
+    if (storedTempHistory) {
+        tempHistory = JSON.parse(storedTempHistory);
+    }
+    if (storedPressureHistory) {
+        pressureHistory = JSON.parse(storedPressureHistory);
+    }
+    
     const cachedData = localStorage.getItem('scmWeatherData');
     const cachedTime = localStorage.getItem('scmWeatherTime');
     
@@ -549,6 +609,66 @@ async function loadWeather() {
         }
     }
 }
+
+// ====================================================
+
+/**
+ * Lade historische Daten von GeoSphere für Trend-Berechnung
+ */
+async function loadHistoryData() {
+    try {
+        const historyUrl = getHistoryApiUrl();
+        console.log("Lade historische Daten von:", historyUrl);
+        
+        const response = await fetch(historyUrl);
+        if (!response.ok) {
+            console.log("History API nicht verfügbar, Status:", response.status);
+            return null;
+        }
+        
+        const json = await response.json();
+        if (!json.features || json.features.length === 0) {
+            console.log("Keine historischen Daten erhalten");
+            return null;
+        }
+        
+        return json;
+    } catch (err) {
+        console.error("Fehler beim Laden der Historie:", err);
+        return null;
+    }
+}
+
+/**
+ * Extrahiere Werte aus historischen Daten für Trend-Berechnung
+ */
+function extractHistoryValues(historyJson, parameter) {
+    if (!historyJson || !historyJson.features || historyJson.features.length === 0) {
+        return [];
+    }
+    
+    const p = historyJson.features[0].properties.parameters;
+    if (!p[parameter]) {
+        return [];
+    }
+    
+    // Extrahiere alle Datenpunkte (neueste zuerst)
+    const values = [];
+    const timestamps = historyJson.timestamps;
+    const data = p[parameter].data;
+    
+    for (let i = 0; i < timestamps.length; i++) {
+        if (data[i] !== null && data[i] !== undefined) {
+            values.push({
+                value: data[i],
+                time: new Date(timestamps[i])
+            });
+        }
+    }
+    
+    return values.reverse(); // Älteste zuerst für Konsistenz
+}
+
 
 // ====================================================
 // HINTERGRUNDBILD
