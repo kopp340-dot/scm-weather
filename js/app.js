@@ -1,10 +1,10 @@
 /**
  * SCM Live-Wetter Mattsee
- * Version: 3.11
+ * Version: 3.13
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.11";
+const VERSION = "3.13";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -80,7 +80,7 @@ function getWindInfo(k) {
 }
 
 // ====================================================
-// TREND-ANZEIGE
+// TREND-ANZEIGE - EMPFINDLICHER
 // ====================================================
 
 /**
@@ -143,7 +143,8 @@ function updateWindTrend(currentWind) {
         const timeDiffHours = (last.time - first.time) / (1000 * 60 * 60);
         const valueDiff = last.value - first.value;
         const trendPerHour = valueDiff / timeDiffHours;
-        renderTrendGraph(container, windHistory, trendPerHour, 0.3);
+        // Empfindlicher: Schwellenwert auf 0.1 reduziert
+        renderTrendGraph(container, windHistory, trendPerHour, 0.1);
     } else {
         container.innerHTML = "";
     }
@@ -167,7 +168,8 @@ function updateTempTrend(currentTemp) {
         const timeDiffHours = (last.time - first.time) / (1000 * 60 * 60);
         const valueDiff = last.value - first.value;
         const trendPerHour = valueDiff / timeDiffHours;
-        renderTrendGraph(container, tempHistory, trendPerHour, 0.3);
+        // Schwellenwert fuer Temperatur: 0.5 Grad/Stunde
+        renderTrendGraph(container, tempHistory, trendPerHour, 0.5);
     } else {
         container.innerHTML = "";
     }
@@ -191,6 +193,7 @@ function updatePressureTrend(currentPressure) {
         const timeDiffHours = (last.time - first.time) / (1000 * 60 * 60);
         const valueDiff = last.value - first.value;
         const trendPerHour = valueDiff / timeDiffHours;
+        // Schwellenwert fuer Luftdruck: 1 hPa/Stunde
         renderTrendGraph(container, pressureHistory, trendPerHour, 1);
     } else {
         container.innerHTML = "";
@@ -237,10 +240,10 @@ function updateCountdown() {
         refreshInfo.textContent = "Aktualisierung jetzt...";
     } else if (waitSeconds < 60) {
         // Letzte Minute: Sekunden herunterzaehlen
-        refreshInfo.textContent = "Naechste Aktualisierung in " + Math.ceil(waitSeconds) + " s";
+        refreshInfo.textContent = "Nächste Aktualisierung in " + Math.ceil(waitSeconds) + " s";
     } else {
         const displayMinutes = Math.floor(waitSeconds / 60);
-        refreshInfo.textContent = "Naechste Aktualisierung in " + displayMinutes + " Min.";
+        refreshInfo.textContent = "Nächste Aktualisierung in " + displayMinutes + " Min.";
     }
 }
 
@@ -266,7 +269,7 @@ function updateSailingLight(knots, gust = null) {
     if (gust !== null && gust !== undefined) {
         const gustInfo = getWindInfo(gust);
         if (windInfo.text !== gustInfo.text) {
-            displayText = windInfo.text + " - Boen: " + gustInfo.text;
+            displayText = windInfo.text + " - Böen: " + gustInfo.text;
             background = `linear-gradient(to right, ${windInfo.color}, ${gustInfo.color})`;
         }
     }
@@ -342,7 +345,7 @@ function updateGustColor(knots) {
  */
 async function loadWeather() {
     try {
-        document.getElementById("liveStatus").textContent = "\u2603 LIVE";
+        document.getElementById("liveStatus").textContent = "🟢 LIVE";
 
         const response = await fetch(API_URL);
         if (!response.ok) throw new Error("HTTP " + response.status);
@@ -385,14 +388,14 @@ async function loadWeather() {
         const directionText = document.getElementById("directionText");
         const windArrow = document.getElementById("windArrow");
         
-        if (directionValue) directionValue.textContent = Math.round(dir) + "\u00b0";
+        if (directionValue) directionValue.textContent = Math.round(dir) + "°";
         if (directionText) directionText.textContent = windDirection(dir);
         if (windArrow) windArrow.style.transform = `rotate(${(dir + 180) % 360}deg)`;
 
         // --- WETTERDATEN ---
         const tempElement = document.getElementById("temperature");
         if (tempElement) {
-            tempElement.textContent = p.TL.data[0].toFixed(1) + " \u00b0C";
+            tempElement.textContent = p.TL.data[0].toFixed(1) + " °C";
             updateTempTrend(p.TL.data[0]);
         }
 
@@ -431,7 +434,7 @@ async function loadWeather() {
 
     } catch (err) {
         console.error("GeoSphere Fehler:", err);
-        document.getElementById("liveStatus").textContent = "\u26A0 OFFLINE";
+        document.getElementById("liveStatus").textContent = "🔴 OFFLINE";
         document.getElementById("refreshInfo").textContent = "Verbindung zur GeoSphere fehlgeschlagen.";
     }
 }
@@ -503,7 +506,7 @@ function scheduleWeatherUpdate() {
 
 // Version anzeigen
 document.getElementById("version").textContent = 
-    "SCM Live-Wetter \u00b7 Version " + VERSION + " \u00b7 \u00a9 2026 Segelclub Mattsee";
+    "SCM Live-Wetter · Version " + VERSION + " · © 2026 Segelclub Mattsee";
 
 // Webcam laden
 updateWebcam();

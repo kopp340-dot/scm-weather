@@ -1,6 +1,6 @@
 /* ============================================
    SCM Live-Wetter - Styles
-   Version: 3.9
+   Version: 3.12
    ============================================ */
 
 /* ------------------------------------------------ */
@@ -305,6 +305,12 @@ body {
 .icon {
     font-size: 2rem;
 }
+
+/* Farbige Emoji-Icons auf allen Geraeten */
+.small-card:nth-child(1) .icon { color: #ff6b35; }
+.small-card:nth-child(2) .icon { color: #4a90e2; }
+.small-card:nth-child(3) .icon { color: #4a90e2; }
+.small-card:nth-child(4) .icon { color: #4a90e2; }
 
 .label {
     color: #1a1a1a;
