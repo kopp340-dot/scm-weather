@@ -189,15 +189,25 @@ function renderTrendGraph(container, history, trendPerHour, threshold) {
 
 function updateCountdown() {
     const now = new Date();
-    const nextUpdate = new Date(Math.ceil(now.getTime() / 600000) * 600000);
-    const diffMs = nextUpdate - now;
-    nextUpdateInMinutes = Math.ceil(diffMs / 60000);
-    
-    if (nextUpdateInMinutes === 0) {
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+
+    // Berechne die nächste volle 10-Minuten-Marke + 2 Minuten Offset
+    const nextFullTenMinutes = Math.ceil(minutes / 10) * 10;
+    let targetMinutes = nextFullTenMinutes + 2;
+    if (targetMinutes >= 60) targetMinutes -= 60;
+
+    // Wartezeit bis zum nächsten Zielzeitpunkt
+    let waitMinutes = targetMinutes - minutes;
+    if (waitMinutes < 0) waitMinutes += 60;
+    let waitSeconds = waitMinutes * 60 - seconds;
+
+    if (waitSeconds <= 0) {
         document.getElementById("refreshInfo").textContent = "Aktualisierung jetzt...";
     } else {
+        const displayMinutes = Math.ceil(waitSeconds / 60000);
         document.getElementById("refreshInfo").textContent = 
-            "Nächste Aktualisierung in " + nextUpdateInMinutes + " Min.";
+            "Nächste Aktualisierung in " + displayMinutes + " Min.";
     }
 }
 
@@ -521,6 +531,5 @@ function scheduleWeatherUpdate() {
 updateWebcam();
 setInterval(updateWebcam, WEBCAM_INTERVAL);
 
-// Sofort laden und dann synchronisiert weitermachen
-loadWeather();
+// Synchronisiertes Wetterdaten-Laden starten (2 Min. nach GeoSphere-Update)
 scheduleWeatherUpdate();
