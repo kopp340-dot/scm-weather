@@ -4,7 +4,7 @@
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.15";
+const VERSION = "3.16";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -461,33 +461,39 @@ function updateWebcam() {
  * (2 Minuten nach jedem 10-Minuten-Update: 02, 12, 22, 32, 42, 52)
  */
 function scheduleWeatherUpdate() {
-    const now = new Date();
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
-
-    // GeoSphere aktualisiert zu 0, 10, 20, 30, 40, 50 Minuten
-    // Wir wollen 2 Minuten DANACH laden: 2, 12, 22, 32, 42, 52
-    const geosphereMinute = Math.floor(minutes / 10) * 10;
-    let targetMinutes = geosphereMinute + 2;
-    
-    if (targetMinutes <= minutes) {
-        targetMinutes += 10; // Naechster 10-Minuten-Block + 2
-    }
-    if (targetMinutes >= 60) {
-        targetMinutes -= 60;
-    }
-
-    let waitSeconds = (targetMinutes - minutes) * 60 - seconds;
-    if (waitSeconds < 0) waitSeconds = 0;
-
     // Sofort laden
     loadWeather();
 
-    // Naechstes Update planen
-    setTimeout(() => {
-        loadWeather();
-        setInterval(loadWeather, REFRESH_INTERVAL);
-    }, waitSeconds * 1000);
+    // Rekursive Funktion zum Planen des naechsten Updates
+    function scheduleNext() {
+        const now = new Date();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+
+        // GeoSphere aktualisiert zu 0, 10, 20, 30, 40, 50 Minuten
+        // Wir wollen 2 Minuten DANACH laden: 2, 12, 22, 32, 42, 52
+        const geosphereMinute = Math.floor(minutes / 10) * 10;
+        let targetMinutes = geosphereMinute + 2;
+        
+        if (targetMinutes <= minutes) {
+            targetMinutes += 10; // Naechster 10-Minuten-Block + 2
+        }
+        if (targetMinutes >= 60) {
+            targetMinutes -= 60;
+        }
+
+        let waitSeconds = (targetMinutes - minutes) * 60 - seconds;
+        if (waitSeconds < 0) waitSeconds = 0;
+
+        // Naechsten Update planen (rekursiv)
+        setTimeout(() => {
+            loadWeather();
+            scheduleNext();
+        }, waitSeconds * 1000);
+    }
+
+    // Ersten naechsten Update planen
+    scheduleNext();
 }
 
 // ====================================================
