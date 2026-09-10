@@ -559,5 +559,6 @@ function scheduleWeatherUpdate() {
 updateWebcam();
 setInterval(updateWebcam, WEBCAM_INTERVAL);
 
-// Synchronisiertes Wetterdaten-Laden starten (2 Min. nach GeoSphere-Update)
+// Sofort laden und dann synchronisiert weitermachen
+loadWeather();
 scheduleWeatherUpdate();
