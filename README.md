@@ -136,11 +136,11 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **3.5**
+Aktuell: **3.6**
 
 ## Changelog
 
-### v3.5 (2025)
+### v3.6 (2025)
 - Segelampel-Farben und -Texte an Windfinder angepasst (bis 50 kt)
 - Link "Weitere Wind-Infos" auf Lukes GeosphereGraph-Dashboard aktualisiert
 - **Zweifarbige Segelampel** bei abweichenden Böen (Gradient)

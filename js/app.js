@@ -1,4 +1,4 @@
-const VERSION = "3.5";
+const VERSION = "3.6";
 
 const API_URL =
 "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
@@ -449,12 +449,14 @@ async function loadWeather() {
 
         document.getElementById("gust").textContent =
             gust.toFixed(1) + " kt";
-        // Böen-Wert in der gleichen Farbe wie die Böen-Anzeige
-        const gustElement = document.getElementById("gust");
-        const gustLabel = document.querySelector(".gust-label");
         // Böen-Wert und "Böen" Text in der gleichen Farbe wie die Böen-Ampel
+        const gustElement = document.getElementById("gust");
+        const gustLabel = document.getElementById("gustLabel");
+        
+        // Farbe für beide Elemente setzen
         gustElement.classList.remove("gust-blue", "gust-yellow", "gust-green", "gust-orange", "gust-red");
         if (gustLabel) gustLabel.classList.remove("gust-blue", "gust-yellow", "gust-green", "gust-orange", "gust-red");
+        
         if (gust < 3) {
             gustElement.classList.add("gust-blue");
             if (gustLabel) gustLabel.classList.add("gust-blue");
@@ -470,10 +472,9 @@ async function loadWeather() {
         } else if (gust < 25) {
             gustElement.classList.add("gust-orange");
             if (gustLabel) gustLabel.classList.add("gust-orange");
-        } else if (gust < 30) {
-            gustElement.classList.add("gust-red");
         } else {
             gustElement.classList.add("gust-red");
+            if (gustLabel) gustLabel.classList.add("gust-red");
         }
 
         document.getElementById("beaufort").textContent =

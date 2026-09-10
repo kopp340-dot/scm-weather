@@ -1,34 +1,5 @@
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
 /* ------------------------------------------------ */
 /* Grundlayout */
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
-/* ------------------------------------------------ */
 
 *{
     margin:0;
@@ -52,37 +23,8 @@ body{
 
 }
 
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
 /* ------------------------------------------------ */
 /* Panorama-Hintergrund */
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
-/* ------------------------------------------------ */
 
 .webcam-bg{
 
@@ -92,9 +34,11 @@ body{
     left:0;
 
     width:100%;
+
     height:100%;
 
     object-fit:cover;
+
     object-position:center;
 
     z-index:-1;
@@ -105,37 +49,8 @@ body{
 
 }
 
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
 /* ------------------------------------------------ */
 /* Header */
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
-/* ------------------------------------------------ */
 
 .header{
 
@@ -195,37 +110,8 @@ body{
 
 }
 
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
 /* ------------------------------------------------ */
 /* Karten */
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
-/* ------------------------------------------------ */
 
 .card{
 
@@ -243,37 +129,8 @@ body{
 
 }
 
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
 /* ------------------------------------------------ */
 /* Wind */
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
-/* ------------------------------------------------ */
 
 .wind-card{
 
@@ -284,7 +141,7 @@ body{
 
 .wind-number{
 
-    font-size:4.5rem;
+    font-size:3.8rem;
 
     font-weight:bold;
 
@@ -294,7 +151,8 @@ body{
 
 .wind-unit{
 
-    font-size:1.5rem;
+    font-size:2.2rem;
+    vertical-align: top;
 
 }
 
@@ -318,37 +176,8 @@ body{
 .wind-orange{color:#ff8800;}
 .wind-red{color:#d60000;}
 
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
 /* ------------------------------------------------ */
 /* Windrose */
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
-/* ------------------------------------------------ */
 
 .wind-direction{
 
@@ -581,37 +410,8 @@ body{
 
 }
 
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
 /* ------------------------------------------------ */
 /* Böen */
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
-/* ------------------------------------------------ */
 
 .gust-box{
 
@@ -631,37 +431,8 @@ body{
 .gust-orange{color:#ff8800;}
 .gust-red{color:#d60000;}
 
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
 /* ------------------------------------------------ */
 /* Wettergrid */
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
-/* ------------------------------------------------ */
 
 .weather-grid{
 
@@ -708,22 +479,6 @@ body{
     font-weight:bold;
 
 }
-
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
-/* ------------------------------------------------ */
 
 .link-group{
 
@@ -777,37 +532,8 @@ body{
 
 }
 
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
 /* ------------------------------------------------ */
 /* Smartphone */
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
-/* ------------------------------------------------ */
 
 @media(max-width:600px){
 
@@ -867,36 +593,8 @@ body{
 
 }
 
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
 /* ------------------------------------------------ */
 /* Sehr schmale Fenster (Mobil-Dropdown, iframe) */
-
-/* Trend-Symbole (Temperatur, Luftdruck) */
-.trend {
-    margin-left: 5px;
-    font-size: 1.2rem;
-    color: inherit;
-}
-
-/* Farbige Symbole für PC (override default) */
-@media (min-width: 601px) {
-    .trend {
-        color: #666 !important; /* Standardfarbe, wird per JS überschrieben */
-    }
-}
-/* ------------------------------------------------ */
 
 @media(max-width:430px){
 
@@ -964,5 +662,58 @@ body{
 
 }
 
+/* ------------------------------------------------ */
+/* Trend-Symbole (Temperatur, Luftdruck) */
 
+.trend {
+    margin-left: 5px;
+    font-size: 1.2rem;
+    color: inherit;
+}
 
+/* Farbige Symbole für PC - farbige Symbole statt schwarz */
+@media (min-width: 601px) {
+    .small-card:nth-child(1) .trend {
+        color: #ff6b35;
+    }
+    .small-card:nth-child(3) .trend {
+        color: #4a90e2;
+    }
+}
+
+/* Farbige SVG-Symbole */
+.colored-icon {
+    color: inherit;
+}
+
+@media (min-width: 601px) {
+    .small-card .icon .colored-icon {
+        filter: none;
+    }
+    .small-card:nth-child(1) .icon .colored-icon {
+        color: #ff6b35;
+    }
+    .small-card:nth-child(2) .icon .colored-icon {
+        color: #4a90e2;
+    }
+    .small-card:nth-child(3) .icon .colored-icon {
+        color: #4a90e2;
+    }
+    .small-card:nth-child(4) .icon .colored-icon {
+        color: #4a90e2;
+    }
+}
+
+/* Wind-Wert und Einheit "kt" - Größe anpassen */
+#wind {
+    font-size: 3.8rem;
+}
+.wind-number .wind-unit {
+    font-size: 2.2rem;
+    vertical-align: top;
+}
+
+/* Böen-Text farbig */
+#gustLabel {
+    color: inherit;
+}
