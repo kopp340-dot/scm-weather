@@ -963,3 +963,10 @@ body{
 }
 
 }
+
+/* Wind- und Böen-Anzeige in gleichem Format wie wind-number */
+#wind, #gust {
+    font-size: 4.5rem;
+    font-weight: bold;
+    line-height: 1;
+}

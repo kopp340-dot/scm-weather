@@ -1,4 +1,4 @@
-const VERSION = "3.0";
+const VERSION = "3.1";
 
 const API_URL =
 "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
@@ -204,13 +204,16 @@ function updateCountdown() {
     if (waitMinutes < 0) waitMinutes += 60;
     let waitSeconds = waitMinutes * 60 - seconds;
 
+    // Korrigiere negative Werte
+    if (waitSeconds < 0) waitSeconds = 0;
+
     if (waitSeconds <= 0) {
         document.getElementById("refreshInfo").textContent = "Aktualisierung jetzt...";
     } else if (waitSeconds <= 60) {
         document.getElementById("refreshInfo").textContent = 
-            "Nächste Aktualisierung in " + Math.ceil(waitSeconds) + " s";
+            "Nächste Aktualisierung in " + Math.floor(waitSeconds) + " s";
     } else {
-        const displayMinutes = Math.ceil(waitSeconds / 60000);
+        const displayMinutes = Math.floor(waitSeconds / 60);
         document.getElementById("refreshInfo").textContent = 
             "Nächste Aktualisierung in " + displayMinutes + " Min.";
     }
@@ -414,10 +417,10 @@ async function loadWeather() {
 
         // Wind
 
-        document.getElementById("wind").textContent =
-            wind.toFixed(1);
-        // Wind-Wert in der gleichen Farbe wie die Wind-Anzeige
         const windElement = document.getElementById("wind");
+        windElement.textContent = wind.toFixed(1);
+        // Wind-Wert in der gleichen Farbe und Größe wie die Segelampel
+        windElement.classList.remove("wind-blue", "wind-yellow", "wind-green", "wind-orange", "wind-red");
         if (wind < 3) {
             windElement.classList.add("wind-blue");
         } else if (wind < 10) {
@@ -439,6 +442,8 @@ async function loadWeather() {
             gust.toFixed(1) + " kt";
         // Böen-Wert in der gleichen Farbe wie die Böen-Anzeige
         const gustElement = document.getElementById("gust");
+        // Böen-Wert in der gleichen Farbe wie die Böen-Ampel
+        gustElement.classList.remove("gust-blue", "gust-yellow", "gust-green", "gust-orange", "gust-red");
         if (gust < 3) {
             gustElement.classList.add("gust-blue");
         } else if (gust < 10) {
