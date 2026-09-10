@@ -542,12 +542,13 @@ function scheduleWeatherUpdate() {
     if (waitMinutes < 0) waitMinutes += 60;
     let waitSeconds = waitMinutes * 60 - seconds;
 
-    // Sofort laden, wenn wir bereits im richtigen Fenster sind
+    // Immer sofort laden, dann Intervall starten
+    loadWeather();
+    
+    // Nächstes Update planen
     if (waitSeconds <= 0) {
-        loadWeather();
         setInterval(loadWeather, REFRESH_INTERVAL);
     } else {
-        // Warte bis zum Zielzeitpunkt, dann starte Intervall
         setTimeout(() => {
             loadWeather();
             setInterval(loadWeather, REFRESH_INTERVAL);
@@ -559,6 +560,5 @@ function scheduleWeatherUpdate() {
 updateWebcam();
 setInterval(updateWebcam, WEBCAM_INTERVAL);
 
-// Sofort laden und dann synchronisiert weitermachen
-loadWeather();
+// Sofort laden und synchronisiert weitermachen
 scheduleWeatherUpdate();
