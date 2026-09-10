@@ -13,6 +13,8 @@ const WEBCAM_INTERVAL = 3600000;
 let nextUpdateInMinutes = 10;
 let lastWindValue = null;
 let lastWindTime = null;
+let lastTempValue = null;
+let lastPressureValue = null;
 
 // ----------------------------------------------------
 // Hilfsfunktionen
@@ -88,6 +90,72 @@ function updateWindTrend(currentWind) {
     }
     lastWindValue = currentWind;
     lastWindTime = new Date();
+}
+
+// Trend-Anzeige für Temperatur
+function updateTempTrend(currentTemp) {
+    const trendElement = document.getElementById("tempTrend");
+    if (!trendElement) return;
+
+    if (lastTempValue === null) {
+        trendElement.textContent = "";
+        trendElement.style.color = "";
+    } else {
+        const now = new Date();
+        const timeDiffMs = now - (lastWindTime || now);
+        const timeDiffHours = timeDiffMs / (1000 * 60 * 60);
+
+        if (timeDiffHours < 1) {
+            const trend = currentTemp - lastTempValue;
+            if (trend > 0.5) {
+                trendElement.textContent = " ↑";
+                trendElement.style.color = "#009933";
+            } else if (trend < -0.5) {
+                trendElement.textContent = " ↓";
+                trendElement.style.color = "#cc0000";
+            } else {
+                trendElement.textContent = " →";
+                trendElement.style.color = "#666666";
+            }
+        } else {
+            trendElement.textContent = "";
+            trendElement.style.color = "";
+        }
+    }
+    lastTempValue = currentTemp;
+}
+
+// Trend-Anzeige für Luftdruck
+function updatePressureTrend(currentPressure) {
+    const trendElement = document.getElementById("pressureTrend");
+    if (!trendElement) return;
+
+    if (lastPressureValue === null) {
+        trendElement.textContent = "";
+        trendElement.style.color = "";
+    } else {
+        const now = new Date();
+        const timeDiffMs = now - (lastWindTime || now);
+        const timeDiffHours = timeDiffMs / (1000 * 60 * 60);
+
+        if (timeDiffHours < 1) {
+            const trend = currentPressure - lastPressureValue;
+            if (trend > 1) {
+                trendElement.textContent = " ↑";
+                trendElement.style.color = "#009933";
+            } else if (trend < -1) {
+                trendElement.textContent = " ↓";
+                trendElement.style.color = "#cc0000";
+            } else {
+                trendElement.textContent = " →";
+                trendElement.style.color = "#666666";
+            }
+        } else {
+            trendElement.textContent = "";
+            trendElement.style.color = "";
+        }
+    }
+    lastPressureValue = currentPressure;
 }
 
 function updateCountdown() {
@@ -334,9 +402,11 @@ async function loadWeather() {
 
         document.getElementById("temperature").textContent =
             p.TL.data[0].toFixed(1) + " °C";
+        updateTempTrend(p.TL.data[0]);
 
         document.getElementById("pressure").textContent =
             p.P.data[0].toFixed(1) + " hPa";
+        updatePressureTrend(p.P.data[0]);
 
         document.getElementById("humidity").textContent =
             p.RF.data[0].toFixed(0) + " %";
