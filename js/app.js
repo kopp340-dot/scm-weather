@@ -180,10 +180,10 @@ function renderTrendGraph(container, history, trendPerHour, threshold) {
 
     // SVG + Pfeil anzeigen
     container.innerHTML = `
-        <svg width="${width}" height="${height}" style="vertical-align: middle; margin-right: 5px;" viewBox="0 0 ${width} ${height}">
+        <svg width="${width}" height="${height}" style="vertical-align: middle; margin-left: 5px;" viewBox="0 0 ${width} ${height}">
             <polyline fill="none" stroke="${color}" stroke-width="2" points="${points}"/>
         </svg>
-        <span style="color: ${color}; font-size: 1.2rem;">${arrow}</span>
+        <span style="color: ${color}; font-size: 1.2rem; margin-left: 5px;">${arrow}</span>
     `;
 }
 
