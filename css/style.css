@@ -970,3 +970,8 @@ body{
     font-weight: bold;
     line-height: 1;
 }
+
+/* Böen-Text farbig (wird per JS gesetzt) */
+.gust-box .gust-label {
+    color: inherit;
+}
