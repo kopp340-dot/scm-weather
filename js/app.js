@@ -204,16 +204,44 @@ function updateCountdown() {
 
     if (waitSeconds <= 0) {
         document.getElementById("refreshInfo").textContent = "Aktualisierung jetzt...";
+    } else if (waitSeconds <= 60) {
+        // Letzte Minute: Sekunden anzeigen
+        document.getElementById("refreshInfo").textContent = 
+            "Nächste Aktualisierung in " + Math.ceil(waitSeconds) + " s";
     } else {
+        // Mehr als eine Minute: Minuten anzeigen
         const displayMinutes = Math.ceil(waitSeconds / 60000);
         document.getElementById("refreshInfo").textContent = 
             "Nächste Aktualisierung in " + displayMinutes + " Min.";
     }
 }
 
-// Alle 30 Sekunden aktualisieren
-setInterval(updateCountdown, 30000);
+// Alle 1 Sekunde aktualisieren, wenn weniger als 1 Minute übrig ist, sonst alle 30 Sekunden
+function updateCountdownInterval() {
+    const now = new Date();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+
+    const nextFullTenMinutes = Math.ceil(minutes / 10) * 10;
+    let targetMinutes = nextFullTenMinutes + 2;
+    if (targetMinutes >= 60) targetMinutes -= 60;
+
+    let waitMinutes = targetMinutes - minutes;
+    if (waitMinutes < 0) waitMinutes += 60;
+    let waitSeconds = waitMinutes * 60 - seconds;
+
+    // Intervall anpassen: 1 Sekunde, wenn < 60s übrig, sonst 30 Sekunden
+    if (waitSeconds <= 60) {
+        setInterval(updateCountdown, 1000);
+    } else {
+        setInterval(updateCountdown, 30000);
+    }
+}
+
+// Initialen Countdown starten
 updateCountdown();
+updateCountdownInterval();
+setInterval(updateCountdownInterval, 30000);
 
 function updateSailingLight(knots, gust = null) {
 
