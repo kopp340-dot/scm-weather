@@ -684,24 +684,21 @@ body{
 /* Farbige SVG-Symbole */
 .colored-icon {
     color: inherit;
+    filter: none;
 }
 
-@media (min-width: 601px) {
-    .small-card .icon .colored-icon {
-        filter: none;
-    }
-    .small-card:nth-child(1) .icon .colored-icon {
-        color: #ff6b35;
-    }
-    .small-card:nth-child(2) .icon .colored-icon {
-        color: #4a90e2;
-    }
-    .small-card:nth-child(3) .icon .colored-icon {
-        color: #4a90e2;
-    }
-    .small-card:nth-child(4) .icon .colored-icon {
-        color: #4a90e2;
-    }
+/* Immer farbig, nicht nur auf PC */
+.small-card:nth-child(1) .icon .colored-icon {
+    color: #ff6b35;
+}
+.small-card:nth-child(2) .icon .colored-icon {
+    color: #4a90e2;
+}
+.small-card:nth-child(3) .icon .colored-icon {
+    color: #4a90e2;
+}
+.small-card:nth-child(4) .icon .colored-icon {
+    color: #4a90e2;
 }
 
 /* Wind-Wert und Einheit "kt" - Größe anpassen */
@@ -713,7 +710,12 @@ body{
     vertical-align: top;
 }
 
-/* Böen-Text farbig */
+/* Böen-Text farbig - erbt Farbe vom gust-value */
 #gustLabel {
+    color: inherit;
+}
+
+/* Böen-Text soll die gleiche Farbe wie der Böen-Wert haben */
+.gust-box #gustLabel {
     color: inherit;
 }
