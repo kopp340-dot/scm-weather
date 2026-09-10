@@ -4,7 +4,7 @@
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.14";
+const VERSION = "3.15";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -458,46 +458,36 @@ function updateWebcam() {
 
 /**
  * Wetterdaten synchronisiert mit GeoSphere laden
- * (2 Minuten nach jedem 10-Minuten-Update)
+ * (2 Minuten nach jedem 10-Minuten-Update: 02, 12, 22, 32, 42, 52)
  */
 function scheduleWeatherUpdate() {
     const now = new Date();
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
 
-    // Naechste volle 10-Minuten-Marke + 2 Minuten Offset
-    const nextFullTenMinutes = Math.floor((minutes + 2) / 10) * 10;
-    let targetMinutes = nextFullTenMinutes;
+    // GeoSphere aktualisiert zu 0, 10, 20, 30, 40, 50 Minuten
+    // Wir wollen 2 Minuten DANACH laden: 2, 12, 22, 32, 42, 52
+    const geosphereMinute = Math.floor(minutes / 10) * 10;
+    let targetMinutes = geosphereMinute + 2;
+    
     if (targetMinutes <= minutes) {
-        targetMinutes += 10;
+        targetMinutes += 10; // Naechster 10-Minuten-Block + 2
     }
     if (targetMinutes >= 60) {
         targetMinutes -= 60;
     }
 
-    let waitMinutes = targetMinutes - minutes;
-    if (waitMinutes < 0) waitMinutes += 60;
-    let waitSeconds = waitMinutes * 60 - seconds;
+    let waitSeconds = (targetMinutes - minutes) * 60 - seconds;
+    if (waitSeconds < 0) waitSeconds = 0;
 
     // Sofort laden
     loadWeather();
 
     // Naechstes Update planen
-    if (waitSeconds <= 0) {
-        // Berechne naechsten Zielzeitpunkt
-        const nextTargetMinutes = (Math.floor((minutes + 2) / 10) * 10) + 10;
-        const nextWaitMinutes = nextTargetMinutes - minutes;
-        const nextWaitSeconds = nextWaitMinutes * 60 - seconds;
-        setTimeout(() => {
-            loadWeather();
-            setInterval(loadWeather, REFRESH_INTERVAL);
-        }, nextWaitSeconds * 1000);
-    } else {
-        setTimeout(() => {
-            loadWeather();
-            setInterval(loadWeather, REFRESH_INTERVAL);
-        }, waitSeconds * 1000);
-    }
+    setTimeout(() => {
+        loadWeather();
+        setInterval(loadWeather, REFRESH_INTERVAL);
+    }, waitSeconds * 1000);
 }
 
 // ====================================================
