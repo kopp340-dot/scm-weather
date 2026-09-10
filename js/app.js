@@ -1,4 +1,4 @@
-const VERSION = "3.4";
+const VERSION = "3.5";
 
 const API_URL =
 "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
@@ -418,7 +418,33 @@ async function loadWeather() {
 
         // Wind
 
-        document.getElementById("wind").textContent = wind.toFixed(1);
+        const windElement = document.getElementById("wind");
+        const windUnit = document.querySelector(".wind-number .wind-unit");
+        windElement.textContent = wind.toFixed(1);
+        
+        // Wind-Wert und Einheit "kt" farbig (Windfarbskala)
+        windElement.classList.remove("wind-blue", "wind-green", "wind-yellow", "wind-orange", "wind-red");
+        windUnit.classList.remove("wind-blue", "wind-green", "wind-yellow", "wind-orange", "wind-red");
+        
+        if (wind < 3) {
+            windElement.classList.add("wind-blue");
+            windUnit.classList.add("wind-blue");
+        } else if (wind < 10) {
+            windElement.classList.add("wind-blue");
+            windUnit.classList.add("wind-blue");
+        } else if (wind < 15) {
+            windElement.classList.add("wind-green");
+            windUnit.classList.add("wind-green");
+        } else if (wind < 20) {
+            windElement.classList.add("wind-yellow");
+            windUnit.classList.add("wind-yellow");
+        } else if (wind < 25) {
+            windElement.classList.add("wind-orange");
+            windUnit.classList.add("wind-orange");
+        } else {
+            windElement.classList.add("wind-red");
+            windUnit.classList.add("wind-red");
+        }
         updateWindTrend(wind);
 
         document.getElementById("gust").textContent =
