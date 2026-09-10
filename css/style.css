@@ -1,721 +1,442 @@
+/* ============================================
+   SCM Live-Wetter - Styles
+   Version: 3.9
+   ============================================ */
+
 /* ------------------------------------------------ */
 /* Grundlayout */
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-
-    font-family:Arial,Helvetica,sans-serif;
-
-    background:transparent;
-
-    color:#222;
-
-    width:100%;max-width:100%;
-
-    margin:0;
-
-    padding:12px;
-
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: transparent;
+    color: #222;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 12px;
 }
 
 /* ------------------------------------------------ */
 /* Panorama-Hintergrund */
 
-.webcam-bg{
-
-    position:fixed;
-
-    top:0;
-    left:0;
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
-    object-position:center;
-
-    z-index:-1;
-
-    filter:brightness(.9);
-
-    background:#2a3a4a;
-
+.webcam-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: -1;
+    filter: brightness(0.9);
+    background: #2a3a4a;
 }
 
 /* ------------------------------------------------ */
 /* Header */
 
-.header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:18px;
-
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
 }
 
-.header-left{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:15px;
-
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.logo{
-
-    width:65px;
-
+.logo {
+    width: 65px;
 }
 
-.header h1{
-
-    font-size:1.9rem;
-
+.header h1 {
+    font-size: 1.9rem;
 }
 
-.subtitle{
-
-    color:#1a1a1a;
-
+.subtitle {
+    color: #1a1a1a;
 }
 
-.live{
-
-    font-weight:bold;
-
-    color:#0a8c2f;
-
-    text-align:right;
-
+.live {
+    font-weight: bold;
+    color: #0a8c2f;
+    text-align: right;
 }
 
-#timestamp{
-
-    font-size:.9rem;
-
-    color:#1a1a1a;
-
+#timestamp {
+    font-size: 0.9rem;
+    color: #1a1a1a;
 }
 
 /* ------------------------------------------------ */
 /* Karten */
 
-.card{
-
-    background:rgba(255,255,255,.35);
-
-    border-radius:16px;
-
-    padding:18px;
-
-    margin-bottom:18px;
-
-    box-shadow:0 2px 10px rgba(0,0,0,.18);
-
-    backdrop-filter:blur(2px);
-
+.card {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(2px);
 }
 
 /* ------------------------------------------------ */
 /* Wind */
 
-.wind-card{
-
-    text-align:center;
-    background:rgba(255,255,255,.35);
-
+.wind-card {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.35);
 }
 
-.wind-number{
-
-    font-size:3.8rem;
-
-    font-weight:bold;
-
-    line-height:1;
-
+.wind-number {
+    font-size: 3.8rem;
+    font-weight: bold;
+    line-height: 1;
 }
 
-.wind-unit{
-
-    font-size:2.2rem;
+.wind-unit {
+    font-size: 2.2rem;
     vertical-align: top;
-
 }
 
-.beaufort{
-
-    margin-top:8px;
-
-    font-size:1.3rem;
-
-    font-weight:bold;
-
-    color:#005a9c;
-
+.beaufort {
+    margin-top: 8px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #005a9c;
 }
 
-/* Farben */
-
-.wind-blue{color:#0077ff;}
-.wind-yellow{color:#d4a000;}
-.wind-green{color:#009933;}
-.wind-orange{color:#ff8800;}
-.wind-red{color:#d60000;}
+/* Wind-Farben (konsistent mit Segelampel) */
+.wind-blue { color: #0099ff; }
+.wind-green { color: #00ff99; }
+.wind-yellow { color: #ffff00; }
+.wind-orange { color: #ff9900; }
+.wind-red { color: #ff3300; }
 
 /* ------------------------------------------------ */
 /* Windrose */
 
-.wind-direction{
-
-    margin-top:20px;
-
+.wind-direction {
+    margin-top: 20px;
 }
 
-.windrose{
-
-    position:relative;
-
-    width:240px;
-
-    height:240px;
-
-    margin:25px auto;
-
-    border:5px solid #1d3a5c;
-
-    border-radius:50%;
-
-    background:radial-gradient(circle at 50% 50%, #ffffff 0%, #f0f5fa 100%);
-
-    box-shadow:0 4px 14px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.6);
-
+.windrose {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    margin: 25px auto;
+    border: 5px solid #1d3a5c;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f0f5fa 100%);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
 }
 
-/* Skalenstriche */
-
-.windrose-ticks{
-
-    position:absolute;
-
-    inset:0;
-
-    width:100%;
-
-    height:100%;
-
-    pointer-events:none;
-
-    z-index:10;
-
+.windrose-ticks {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
 }
 
-/* Kreuz entfernen - wird durch SVG-Ticks ersetzt */
 .windrose::before,
-.windrose::after{
-
-    content:none;
-
+.windrose::after {
+    content: none;
 }
 
-/* Beschriftung */
-
-.windrose div{
-
-    position:absolute;
-    z-index:15;
-
+.windrose div {
+    position: absolute;
+    z-index: 15;
 }
 
-.north{
-
-    top:6px;
-    left:50%;
-    transform:translateX(-50%);
-
-    color:#d60000;
-    font-weight:bold;
-    font-size:1.4rem;
-    z-index:15;
-
+.north {
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #d60000;
+    font-weight: bold;
+    font-size: 1.4rem;
 }
 
-.south{
-
-    bottom:6px;
-    left:50%;
-    transform:translateX(-50%);
-    font-weight:bold;
-    font-size:1.15rem;
-
+.south {
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    font-size: 1.15rem;
 }
 
-.east{
-
-    right:6px;
-    top:50%;
-    transform:translateY(-50%);
-    font-weight:bold;
-    font-size:1.15rem;
-
+.east {
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    font-size: 1.15rem;
 }
 
-.west{
-
-    left:6px;
-    top:50%;
-    transform:translateY(-50%);
-    font-weight:bold;
-    font-size:1.15rem;
-
+.west {
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    font-size: 1.15rem;
 }
 
 .north-east,
 .south-east,
 .south-west,
-.north-west{
-
-    font-size:1rem;
-    color:#5a7a9c;
-
+.north-west {
+    font-size: 1rem;
+    color: #5a7a9c;
 }
 
-.north-east{
-
-    top:8px;
-    right:10px;
-
+.north-east {
+    top: 8px;
+    right: 10px;
 }
 
-.south-east{
-
-    bottom:8px;
-    right:10px;
-
+.south-east {
+    bottom: 8px;
+    right: 10px;
 }
 
-.south-west{
-
-    bottom:8px;
-    left:10px;
-
+.south-west {
+    bottom: 8px;
+    left: 10px;
 }
 
-.north-west{
-
-    top:8px;
-    left:10px;
-
+.north-west {
+    top: 8px;
+    left: 10px;
 }
 
-
-/* Pfeil - groesser und kontrastreicher */
-
-.wind-arrow{
-
-    position:absolute;
-
-    left:50%;
-
-    top:50%;
-
-    width:100px;
-
-    height:100px;
-
-    margin-left:-50px;
-
-    margin-top:-50px;
-
-    transform-origin:center center;
-
-    transition:transform .5s cubic-bezier(.22,1,.36,1);
-
-    z-index:20;
-
-    filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));
-
+/* Pfeil */
+.wind-arrow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+    transform-origin: center center;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 20;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
 }
 
-.wind-arrow svg{
-
-    width:100%;
-
-    height:100%;
-
+.wind-arrow svg {
+    width: 100%;
+    height: 100%;
 }
 
 /* Mittelpunkt */
-
-.center{
-
-    position:absolute;
-
-    left:50%;
-
-    top:50%;
-
-    width:14px;
-
-    height:14px;
-
-    margin-left:-7px;
-
-    margin-top:-7px;
-
-    background:#1d3a5c;
-
-    border:2px solid #ffffff;
-
-    border-radius:50%;
-
-    z-index:30;
-
-    box-shadow:0 1px 3px rgba(0,0,0,.3);
-
+.center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    margin-left: -7px;
+    margin-top: -7px;
+    background: #1d3a5c;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    z-index: 30;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-#directionValue{
-
-    margin-top:18px;
-
-    font-size:1.7rem;
-
-    font-weight:bold;
-
-    color:#1d3a5c;
-
+#directionValue {
+    margin-top: 18px;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #1d3a5c;
 }
 
-#directionText{
-
-    font-size:1.3rem;
-
-    color:#1a1a1a;
-
-    font-weight:bold;
-
+#directionText {
+    font-size: 1.3rem;
+    color: #1a1a1a;
+    font-weight: bold;
 }
 
 /* ------------------------------------------------ */
-/* Böen */
+/* Boen */
 
-.gust-box{
-
-    margin-top:18px;
-
-    font-size:1.2rem;
-
+.gust-box {
+    margin-top: 18px;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
-/* Böen-Farben (analog Windampel) */
-
-.gust-value{font-weight:bold;}
-
-.gust-blue{color:#0077ff;}
-.gust-yellow{color:#d4a000;}
-.gust-green{color:#009933;}
-.gust-orange{color:#ff8800;}
-.gust-red{color:#d60000;}
+/* Boen-Farben (konsistent mit Wind-Farben) */
+.gust-blue { color: #0099ff; }
+.gust-green { color: #00ff99; }
+.gust-yellow { color: #ffff00; }
+.gust-orange { color: #ff9900; }
+.gust-red { color: #ff3300; }
 
 /* ------------------------------------------------ */
 /* Wettergrid */
 
-.weather-grid{
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:15px;
-
+.weather-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
 }
 
-.small-card{
-
-    background:rgba(255,255,255,.35);
-
-    border-radius:14px;
-
-    padding:15px;
-
-    text-align:center;
-
-    box-shadow:0 2px 8px rgba(0,0,0,.15);
-
+.small-card {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 14px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.icon{
-
-    font-size:2rem;
-
+.icon {
+    font-size: 2rem;
 }
 
-.label{
-
-    color:#1a1a1a;font-weight:bold;
-
-    margin:8px 0;
-
+.label {
+    color: #1a1a1a;
+    font-weight: bold;
+    margin: 8px 0;
 }
 
-.value{
-
-    font-size:1.4rem;
-
-    font-weight:bold;
-
+.value {
+    font-size: 1.4rem;
+    font-weight: bold;
 }
 
-.link-group{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:10px;
-
-    margin-top:14px;
-
-}
-
-.ext-link{
-
-    flex:1 1 auto;
-
-    text-align:center;
-
-    color:#005a9c;
-
-    text-decoration:none;
-
-    font-weight:bold;
-
-    font-size:.95rem;
-
-    padding:10px 12px;
-
-    border:1px solid #005a9c;
-
-    border-radius:10px;
-
-    background:rgba(255,255,255,.5);
-
-    transition:background .15s, color .15s;
-
-}
-
-.ext-link:hover{
-
-    background:#005a9c;
-
-    color:#fff;
-
-}
-
-.footer-card{
-
-    text-align:center;
-
-}
-
-/* ------------------------------------------------ */
-/* Smartphone */
-
-@media(max-width:600px){
-
-.header{
-
-    flex-direction:column;
-
-    gap:12px;
-
-    text-align:center;
-
-}
-
-.header-left{
-
-    flex-direction:column;
-
-}
-
-.wind-number{
-
-    font-size:4rem;
-
-}
-
-.windrose{
-
-    width:200px;
-
-    height:200px;
-
-}
-
-.wind-arrow{
-
-    width:85px;
-
-    height:85px;
-
-    margin-left:-42.5px;
-
-    margin-top:-42.5px;
-
-}
-
-}
-
-.version{
-
-    margin-top:12px;
-
-    font-size:0.8rem;
-
-    color:#1a1a1a;
-
-    text-align:center;
-
-}
-
-/* ------------------------------------------------ */
-/* Sehr schmale Fenster (Mobil-Dropdown, iframe) */
-
-@media(max-width:430px){
-
-.wind-number{
-
-    font-size:3.4rem;
-
-}
-
-.windrose{
-
-    width:170px;
-
-    height:170px;
-
-}
-
-.wind-arrow{
-
-    width:72px;
-
-    height:72px;
-
-    margin-left:-36px;
-
-    margin-top:-36px;
-
-}
-
-.small-card{
-
-    padding:12px 8px;
-
-}
-
-.value{
-
-    font-size:1.2rem;
-
-}
-
-.link-group{
-
-    flex-direction:column;
-
-}
-
-.ext-link{
-
-    font-size:.9rem;
-
-}
-
-.header h1{
-
-    font-size:1.5rem;
-
-}
-
-.logo{
-
-    width:50px;
-
-}
-
-}
-
-/* ------------------------------------------------ */
-/* Trend-Symbole (Temperatur, Luftdruck) */
-
+/* Trend-Symbole */
 .trend {
     margin-left: 5px;
     font-size: 1.2rem;
-    color: inherit;
 }
 
-/* Farbige Symbole für PC - farbige Symbole statt schwarz */
-@media (min-width: 601px) {
-    .small-card:nth-child(1) .trend {
-        color: #ff6b35;
+/* Farbige Trend-Pfeile */
+.trend-up { color: #009933; }
+.trend-down { color: #cc0000; }
+.trend-stable { color: #666666; }
+
+/* ------------------------------------------------ */
+/* Links */
+
+.link-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.ext-link {
+    flex: 1 1 auto;
+    text-align: center;
+    color: #005a9c;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    padding: 10px 12px;
+    border: 1px solid #005a9c;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    transition: background 0.15s, color 0.15s;
+}
+
+.ext-link:hover {
+    background: #005a9c;
+    color: #fff;
+}
+
+.footer-card {
+    text-align: center;
+}
+
+.version {
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: #1a1a1a;
+    text-align: center;
+}
+
+/* ------------------------------------------------ */
+/* Responsive Design */
+
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
     }
-    .small-card:nth-child(3) .trend {
-        color: #4a90e2;
+
+    .header-left {
+        flex-direction: column;
+    }
+
+    .wind-number {
+        font-size: 4rem;
+    }
+
+    .windrose {
+        width: 200px;
+        height: 200px;
+    }
+
+    .wind-arrow {
+        width: 85px;
+        height: 85px;
+        margin-left: -42.5px;
+        margin-top: -42.5px;
     }
 }
 
-/* Farbige SVG-Symbole */
-.colored-icon {
-    color: inherit;
-    filter: none;
-}
+@media (max-width: 430px) {
+    .wind-number {
+        font-size: 3.4rem;
+    }
 
-/* Immer farbig, nicht nur auf PC */
-.small-card:nth-child(1) .icon .colored-icon {
-    color: #ff6b35;
-}
-.small-card:nth-child(2) .icon .colored-icon {
-    color: #4a90e2;
-}
-.small-card:nth-child(3) .icon .colored-icon {
-    color: #4a90e2;
-}
-.small-card:nth-child(4) .icon .colored-icon {
-    color: #4a90e2;
-}
+    .windrose {
+        width: 170px;
+        height: 170px;
+    }
 
-/* Wind-Wert und Einheit "kt" - Größe anpassen */
-#wind {
-    font-size: 3.8rem;
-}
-.wind-number .wind-unit {
-    font-size: 2.2rem;
-    vertical-align: top;
-}
+    .wind-arrow {
+        width: 72px;
+        height: 72px;
+        margin-left: -36px;
+        margin-top: -36px;
+    }
 
-/* Böen-Text farbig - erbt Farbe vom gust-value */
-#gustLabel {
-    color: inherit;
-}
+    .small-card {
+        padding: 12px 8px;
+    }
 
-/* Böen-Text soll die gleiche Farbe wie der Böen-Wert haben */
-.gust-box #gustLabel {
-    color: inherit;
+    .value {
+        font-size: 1.2rem;
+    }
+
+    .link-group {
+        flex-direction: column;
+    }
+
+    .ext-link {
+        font-size: 0.9rem;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .logo {
+        width: 50px;
+    }
 }
