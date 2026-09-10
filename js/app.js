@@ -7,6 +7,9 @@ const REFRESH_INTERVAL = 600000;
 
 // Panorama-Kamera (Segelclub Mattsee)
 const WEBCAM_URL = "https://scmattsee.panocloud.webcam/current1.jpg";
+
+// Global für Countdown-Intervall
+let countdownInterval = null;
 // Stündliche Aktualisierung des Hintergrundbilds
 const WEBCAM_INTERVAL = 3600000;
 
