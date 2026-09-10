@@ -195,12 +195,11 @@ function updateCountdown() {
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
 
-    // Berechne die nächste volle 10-Minuten-Marke + 2 Minuten Offset
+    // Berechne Zeit bis zum nächsten 10-Minuten-Update + 2 Minuten
     const nextFullTenMinutes = Math.ceil(minutes / 10) * 10;
     let targetMinutes = nextFullTenMinutes + 2;
     if (targetMinutes >= 60) targetMinutes -= 60;
 
-    // Wartezeit bis zum nächsten Zielzeitpunkt
     let waitMinutes = targetMinutes - minutes;
     if (waitMinutes < 0) waitMinutes += 60;
     let waitSeconds = waitMinutes * 60 - seconds;
@@ -208,43 +207,18 @@ function updateCountdown() {
     if (waitSeconds <= 0) {
         document.getElementById("refreshInfo").textContent = "Aktualisierung jetzt...";
     } else if (waitSeconds <= 60) {
-        // Letzte Minute: Sekunden anzeigen
         document.getElementById("refreshInfo").textContent = 
             "Nächste Aktualisierung in " + Math.ceil(waitSeconds) + " s";
     } else {
-        // Mehr als eine Minute: Minuten anzeigen
         const displayMinutes = Math.ceil(waitSeconds / 60000);
         document.getElementById("refreshInfo").textContent = 
             "Nächste Aktualisierung in " + displayMinutes + " Min.";
     }
 }
 
-// Alle 1 Sekunde aktualisieren, wenn weniger als 1 Minute übrig ist, sonst alle 30 Sekunden
-function updateCountdownInterval() {
-    const now = new Date();
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
-
-    const nextFullTenMinutes = Math.ceil(minutes / 10) * 10;
-    let targetMinutes = nextFullTenMinutes + 2;
-    if (targetMinutes >= 60) targetMinutes -= 60;
-
-    let waitMinutes = targetMinutes - minutes;
-    if (waitMinutes < 0) waitMinutes += 60;
-    let waitSeconds = waitMinutes * 60 - seconds;
-
-    // Intervall anpassen: 1 Sekunde, wenn < 60s übrig, sonst 30 Sekunden
-    if (waitSeconds <= 60) {
-        setInterval(updateCountdown, 1000);
-    } else {
-        setInterval(updateCountdown, 30000);
-    }
-}
-
-// Initialen Countdown starten
+// Countdown alle 1 Sekunde aktualisieren
+setInterval(updateCountdown, 1000);
 updateCountdown();
-updateCountdownInterval();
-setInterval(updateCountdownInterval, 30000);
 
 function updateSailingLight(knots, gust = null) {
 
@@ -579,12 +553,19 @@ function scheduleWeatherUpdate() {
     if (waitMinutes < 0) waitMinutes += 60;
     let waitSeconds = waitMinutes * 60 - seconds;
 
-    // Immer sofort laden, dann Intervall starten
+    // Immer sofort laden
     loadWeather();
     
-    // Nächstes Update planen
+    // Nächstes Update planen (2 Minuten nach GeoSphere-Update)
     if (waitSeconds <= 0) {
-        setInterval(loadWeather, REFRESH_INTERVAL);
+        // Berechne Zeit bis zum nächsten 10-Minuten-Intervall
+        const nextTargetMinutes = (Math.ceil((minutes + 2) / 10) * 10) + 2;
+        const nextWaitMinutes = nextTargetMinutes - minutes;
+        const nextWaitSeconds = nextWaitMinutes * 60 - seconds;
+        setTimeout(() => {
+            loadWeather();
+            setInterval(loadWeather, REFRESH_INTERVAL);
+        }, nextWaitSeconds * 1000);
     } else {
         setTimeout(() => {
             loadWeather();
@@ -597,8 +578,6 @@ function scheduleWeatherUpdate() {
 updateWebcam();
 setInterval(updateWebcam, WEBCAM_INTERVAL);
 
-// Sofort laden
+// Sofort laden und synchronisiert weitermachen
 loadWeather();
-
-// Synchronisiertes Wetterdaten-Laden starten
 scheduleWeatherUpdate();
