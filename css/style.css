@@ -965,12 +965,4 @@ body{
 }
 
 
-/* Böen-Text farbig (wird per JS gesetzt) */
-.gust-box .gust-label {
-    color: inherit;
-}
 
-/* Wind- und Böen-Werte farbig (Größe bleibt Original) */
-#wind, #gust, .wind-unit {
-    color: inherit;
-}

@@ -1,4 +1,4 @@
-const VERSION = "3.3";
+const VERSION = "3.4";
 
 const API_URL =
 "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
@@ -209,11 +209,12 @@ function updateCountdown() {
 
     if (waitSeconds <= 0) {
         document.getElementById("refreshInfo").textContent = "Aktualisierung jetzt...";
-    } else if (waitSeconds <= 60) {
+    } else if (waitSeconds < 60) {
+        // Letzte Minute: Sekunden herunterzählen
         document.getElementById("refreshInfo").textContent = 
-            "Nächste Aktualisierung in " + Math.floor(waitSeconds) + " s";
+            "Nächste Aktualisierung in " + waitSeconds + " s";
     } else {
-        const displayMinutes = Math.floor(waitSeconds / 60);
+        const displayMinutes = Math.ceil(waitSeconds / 60);
         document.getElementById("refreshInfo").textContent = 
             "Nächste Aktualisierung in " + displayMinutes + " Min.";
     }
@@ -417,33 +418,7 @@ async function loadWeather() {
 
         // Wind
 
-        const windElement = document.getElementById("wind");
-        const windUnit = document.querySelector(".wind-number .wind-unit");
-        windElement.textContent = wind.toFixed(1);
-        // Wind-Wert und Einheit "kt" in der gleichen Farbe und Größe wie die Segelampel
-        windElement.classList.remove("wind-blue", "wind-yellow", "wind-green", "wind-orange", "wind-red");
-        if (wind < 3) {
-            windElement.classList.add("wind-blue");
-            if (windUnit) windUnit.classList.add("wind-blue");
-        } else if (wind < 10) {
-            windElement.classList.add("wind-blue");
-            if (windUnit) windUnit.classList.add("wind-blue");
-        } else if (wind < 15) {
-            windElement.classList.add("wind-green");
-            if (windUnit) windUnit.classList.add("wind-green");
-        } else if (wind < 20) {
-            windElement.classList.add("wind-yellow");
-            if (windUnit) windUnit.classList.add("wind-yellow");
-        } else if (wind < 25) {
-            windElement.classList.add("wind-orange");
-            if (windUnit) windUnit.classList.add("wind-orange");
-        } else if (wind < 30) {
-            windElement.classList.add("wind-red");
-            if (windUnit) windUnit.classList.add("wind-red");
-        } else {
-            windElement.classList.add("wind-red");
-            if (windUnit) windUnit.classList.add("wind-red");
-        }
+        document.getElementById("wind").textContent = wind.toFixed(1);
         updateWindTrend(wind);
 
         document.getElementById("gust").textContent =
