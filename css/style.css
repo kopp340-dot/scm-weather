@@ -304,9 +304,13 @@ body {
 
 .icon {
     font-size: 2rem;
+    /* Erzwinge Farbe fuer Emoji-Icons auf allen Geraeten */
+    -webkit-text-fill-color: currentColor !important;
+    text-fill-color: currentColor !important;
+    filter: none !important;
 }
 
-/* Farbige Emoji-Icons auf allen Geraeten */
+/* Farbige Emoji-Icons */
 .small-card:nth-child(1) .icon { color: #ff6b35; }
 .small-card:nth-child(2) .icon { color: #4a90e2; }
 .small-card:nth-child(3) .icon { color: #4a90e2; }
