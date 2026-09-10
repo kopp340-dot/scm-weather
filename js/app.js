@@ -4,14 +4,14 @@
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.17";
+const VERSION = "3.18";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
     "https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids=11152&parameters=TL&parameters=FF&parameters=FFX&parameters=DD&parameters=RF&parameters=P&parameters=RR";
 
 // Aktualisierungsintervall: 10 Minuten (600000 ms) = GeoSphere-Update-Intervall
-const REFRESH_INTERVAL = 600000;
+const REFRESH_INTERVAL = 900000; // 15 Minuten
 
 // Panorama-Kamera (Segelclub Mattsee)
 const WEBCAM_URL = "https://scmattsee.panocloud.webcam/current1.jpg";
@@ -31,6 +31,7 @@ const MAX_PRESSURE_HISTORY = 18;
 let lastWeatherData = null;
 let lastFetchTime = 0;
 const FALLBACK_TIMEOUT = 300000; // 5 Minuten
+const CACHE_TIMEOUT = 900000; // 15 Minuten Cache-Gültigkeit
 
 // ====================================================
 // HILFSFUNKTIONEN
@@ -423,6 +424,21 @@ function renderFallbackData(json) {
 }
 
 async function loadWeather() {
+    // Prüfe LocalStorage-Cache
+    const cachedData = localStorage.getItem('scmWeatherData');
+    const cachedTime = localStorage.getItem('scmWeatherTime');
+    
+    if (cachedData && cachedTime) {
+        const cacheAge = Date.now() - parseInt(cachedTime);
+        if (cacheAge < CACHE_TIMEOUT) {
+            console.log("Verwende Cache-Daten (Alter: " + Math.round(cacheAge/1000) + "s)");
+            renderFallbackData(JSON.parse(cachedData));
+            document.getElementById("refreshInfo").textContent = 
+                "Daten vom Cache (" + new Date(parseInt(cachedTime)).toLocaleTimeString("de-AT") + ")";
+            return; // Abbruch, keine API-Anfrage nötig
+        }
+    }
+    
     try {
         document.getElementById("liveStatus").textContent = "🟢 LIVE";
 
@@ -515,6 +531,10 @@ async function loadWeather() {
         lastWeatherData = json;
         lastFetchTime = Date.now();
 
+        // Speichere im LocalStorage
+        localStorage.setItem('scmWeatherData', JSON.stringify(json));
+        localStorage.setItem('scmWeatherTime', Date.now().toString());
+        
     } catch (err) {
         console.error("GeoSphere Fehler:", err);
         
