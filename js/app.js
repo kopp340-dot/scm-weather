@@ -1,10 +1,10 @@
 /**
  * SCM Live-Wetter Mattsee
- * Version: 3.10
+ * Version: 3.11
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.10";
+const VERSION = "3.11";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -67,7 +67,7 @@ function windDirection(deg) {
 
 /**
  * Wind-Info basierend auf Knoten
- * Gibt Text und Farbe zurück (konsistent mit Segelampel)
+ * Gibt Text und Farbe zurueck (konsistent mit Segelampel)
  */
 function getWindInfo(k) {
     if (k < 3) return { text: "Windstille", color: "#0099ff" };
@@ -107,14 +107,14 @@ function renderTrendGraph(container, history, trendPerHour, threshold) {
     // Trend-Farbe und Pfeil bestimmen
     let color, arrow;
     if (trendPerHour > threshold) {
-        color = "#009933"; // Grün = steigend
-        arrow = "↑";
+        color = "#009933"; // Gruen = steigend
+        arrow = "\u2191";
     } else if (trendPerHour < -threshold) {
         color = "#cc0000"; // Rot = fallend
-        arrow = "↓";
+        arrow = "\u2193";
     } else {
         color = "#666666"; // Grau = stabil
-        arrow = "→";
+        arrow = "\u2192";
     }
 
     container.innerHTML = `
@@ -198,22 +198,31 @@ function updatePressureTrend(currentPressure) {
 }
 
 // ====================================================
-// COUNTDOWN
+// COUNTDOWN - KORRIGIERT
 // ====================================================
 
 /**
- * Countdown zur nächsten Aktualisierung
- * Synchronisiert mit GeoSphere (10-Minuten-Intervall + 2 Min Delay)
+ * Countdown zur naechsten Aktualisierung
+ * Synchronisiert mit GeoSphere: Alle 10 Minuten + 2 Minuten Delay
+ * Zeigt Sekunden in der letzten Minute an
  */
 function updateCountdown() {
     const now = new Date();
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
 
-    // Nächste volle 10-Minuten-Marke + 2 Minuten Offset
-    const nextFullTenMinutes = Math.ceil(minutes / 10) * 10;
-    let targetMinutes = nextFullTenMinutes + 2;
-    if (targetMinutes >= 60) targetMinutes -= 60;
+    // GeoSphere aktualisiert zu vollen 10-Minuten (0, 10, 20, 30, 40, 50)
+    // Wir wollen 2 Minuten DANACH laden
+    const nextFullTenMinutes = Math.floor((minutes + 2) / 10) * 10;
+    let targetMinutes = nextFullTenMinutes;
+    if (targetMinutes <= minutes) {
+        targetMinutes += 10; // Naechster 10-Minuten-Block
+    }
+
+    // Wenn targetMinutes >= 60, dann auf 0 zuruecksetzen (naechste Stunde)
+    if (targetMinutes >= 60) {
+        targetMinutes -= 60;
+    }
 
     let waitMinutes = targetMinutes - minutes;
     if (waitMinutes < 0) waitMinutes += 60;
@@ -227,10 +236,11 @@ function updateCountdown() {
     if (waitSeconds <= 0) {
         refreshInfo.textContent = "Aktualisierung jetzt...";
     } else if (waitSeconds < 60) {
-        refreshInfo.textContent = "Nächste Aktualisierung in " + waitSeconds + " s";
+        // Letzte Minute: Sekunden herunterzaehlen
+        refreshInfo.textContent = "Naechste Aktualisierung in " + Math.ceil(waitSeconds) + " s";
     } else {
-        const displayMinutes = Math.ceil(waitSeconds / 60);
-        refreshInfo.textContent = "Nächste Aktualisierung in " + displayMinutes + " Min.";
+        const displayMinutes = Math.floor(waitSeconds / 60);
+        refreshInfo.textContent = "Naechste Aktualisierung in " + displayMinutes + " Min.";
     }
 }
 
@@ -243,7 +253,7 @@ updateCountdown();
 // ====================================================
 
 /**
- * Segelampel basierend auf Wind und Böen
+ * Segelampel basierend auf Wind und Boen
  */
 function updateSailingLight(knots, gust = null) {
     const light = document.getElementById("sailingLight");
@@ -256,7 +266,7 @@ function updateSailingLight(knots, gust = null) {
     if (gust !== null && gust !== undefined) {
         const gustInfo = getWindInfo(gust);
         if (windInfo.text !== gustInfo.text) {
-            displayText = windInfo.text + " – Böen: " + gustInfo.text;
+            displayText = windInfo.text + " - Boen: " + gustInfo.text;
             background = `linear-gradient(to right, ${windInfo.color}, ${gustInfo.color})`;
         }
     }
@@ -266,7 +276,7 @@ function updateSailingLight(knots, gust = null) {
 }
 
 // ====================================================
-// FARBEN FÜR WIND UND BÖEN
+// FARBEN FUER WIND UND BOEN
 // ====================================================
 
 /**
@@ -284,13 +294,12 @@ function updateWindColor(knots) {
         windUnit.classList.remove("wind-blue", "wind-green", "wind-yellow", "wind-orange", "wind-red");
     }
 
-    // Neue Klasse basierend auf Windstärke
+    // Neue Klasse basierend auf Windstaerke
     let colorClass;
-    if (knots < 3) colorClass = "wind-blue";
-    else if (knots < 15) colorClass = "wind-blue";
-    else if (knots < 20) colorClass = "wind-green";
-    else if (knots < 25) colorClass = "wind-yellow";
-    else if (knots < 30) colorClass = "wind-orange";
+    if (knots < 10) colorClass = "wind-blue";
+    else if (knots < 15) colorClass = "wind-green";
+    else if (knots < 20) colorClass = "wind-yellow";
+    else if (knots < 25) colorClass = "wind-orange";
     else colorClass = "wind-red";
 
     wind.classList.add(colorClass);
@@ -298,7 +307,7 @@ function updateWindColor(knots) {
 }
 
 /**
- * Böen-Wert farbig markieren
+ * Boen-Wert farbig markieren
  */
 function updateGustColor(knots) {
     const gustElement = document.getElementById("gust");
@@ -312,13 +321,12 @@ function updateGustColor(knots) {
         gustLabel.classList.remove("gust-blue", "gust-green", "gust-yellow", "gust-orange", "gust-red");
     }
 
-    // Neue Klasse basierend auf Böenstärke
+    // Neue Klasse basierend auf Boenstaerke
     let colorClass;
-    if (knots < 3) colorClass = "gust-blue";
-    else if (knots < 15) colorClass = "gust-blue";
-    else if (knots < 20) colorClass = "gust-green";
-    else if (knots < 25) colorClass = "gust-yellow";
-    else if (knots < 30) colorClass = "gust-orange";
+    if (knots < 10) colorClass = "gust-blue";
+    else if (knots < 15) colorClass = "gust-green";
+    else if (knots < 20) colorClass = "gust-yellow";
+    else if (knots < 25) colorClass = "gust-orange";
     else colorClass = "gust-red";
 
     gustElement.classList.add(colorClass);
@@ -334,7 +342,7 @@ function updateGustColor(knots) {
  */
 async function loadWeather() {
     try {
-        document.getElementById("liveStatus").textContent = "🟢 LIVE";
+        document.getElementById("liveStatus").textContent = "\u2603 LIVE";
 
         const response = await fetch(API_URL);
         if (!response.ok) throw new Error("HTTP " + response.status);
@@ -359,7 +367,7 @@ async function loadWeather() {
             updateWindTrend(wind);
         }
 
-        // --- BÖEN ---
+        // --- BOEN ---
         const gustElement = document.getElementById("gust");
         if (gustElement) {
             gustElement.textContent = gust.toFixed(1) + " kt";
@@ -377,14 +385,14 @@ async function loadWeather() {
         const directionText = document.getElementById("directionText");
         const windArrow = document.getElementById("windArrow");
         
-        if (directionValue) directionValue.textContent = Math.round(dir) + "°";
+        if (directionValue) directionValue.textContent = Math.round(dir) + "\u00b0";
         if (directionText) directionText.textContent = windDirection(dir);
         if (windArrow) windArrow.style.transform = `rotate(${(dir + 180) % 360}deg)`;
 
         // --- WETTERDATEN ---
         const tempElement = document.getElementById("temperature");
         if (tempElement) {
-            tempElement.textContent = p.TL.data[0].toFixed(1) + " °C";
+            tempElement.textContent = p.TL.data[0].toFixed(1) + " \u00b0C";
             updateTempTrend(p.TL.data[0]);
         }
 
@@ -423,7 +431,7 @@ async function loadWeather() {
 
     } catch (err) {
         console.error("GeoSphere Fehler:", err);
-        document.getElementById("liveStatus").textContent = "🔴 OFFLINE";
+        document.getElementById("liveStatus").textContent = "\u26A0 OFFLINE";
         document.getElementById("refreshInfo").textContent = "Verbindung zur GeoSphere fehlgeschlagen.";
     }
 }
@@ -454,10 +462,15 @@ function scheduleWeatherUpdate() {
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
 
-    // Nächste volle 10-Minuten-Marke + 2 Minuten Offset
-    const nextFullTenMinutes = Math.ceil(minutes / 10) * 10;
-    let targetMinutes = nextFullTenMinutes + 2;
-    if (targetMinutes >= 60) targetMinutes -= 60;
+    // Naechste volle 10-Minuten-Marke + 2 Minuten Offset
+    const nextFullTenMinutes = Math.floor((minutes + 2) / 10) * 10;
+    let targetMinutes = nextFullTenMinutes;
+    if (targetMinutes <= minutes) {
+        targetMinutes += 10;
+    }
+    if (targetMinutes >= 60) {
+        targetMinutes -= 60;
+    }
 
     let waitMinutes = targetMinutes - minutes;
     if (waitMinutes < 0) waitMinutes += 60;
@@ -466,9 +479,10 @@ function scheduleWeatherUpdate() {
     // Sofort laden
     loadWeather();
 
-    // Nächstes Update planen
+    // Naechstes Update planen
     if (waitSeconds <= 0) {
-        const nextTargetMinutes = (Math.ceil((minutes + 2) / 10) * 10) + 2;
+        // Berechne naechsten Zielzeitpunkt
+        const nextTargetMinutes = (Math.floor((minutes + 2) / 10) * 10) + 10;
         const nextWaitMinutes = nextTargetMinutes - minutes;
         const nextWaitSeconds = nextWaitMinutes * 60 - seconds;
         setTimeout(() => {
@@ -489,7 +503,7 @@ function scheduleWeatherUpdate() {
 
 // Version anzeigen
 document.getElementById("version").textContent = 
-    "SCM Live-Wetter · Version " + VERSION + " · © 2026 Segelclub Mattsee";
+    "SCM Live-Wetter \u00b7 Version " + VERSION + " \u00b7 \u00a9 2026 Segelclub Mattsee";
 
 // Webcam laden
 updateWebcam();
