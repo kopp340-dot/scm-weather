@@ -136,9 +136,13 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **3.29**
+Aktuell: **3.30**
 
 ## Changelog
+
+### v3.30 (2026)
+- Zu frühe GeoSphere-Antworten werden nicht als aktuelles Update übernommen
+- Nach 30 Sekunden wird automatisch erneut abgefragt, bis der neue 10-Minuten-Datenpunkt verfügbar ist
 
 ### v3.29 (2026)
 - Countdown-Text für kleine Bildschirme auf „Aktualisierung in“ gekürzt
