@@ -136,9 +136,13 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **3.25**
+Aktuell: **3.26**
 
 ## Changelog
+
+### v3.26 (2026)
+- Überlappende API-Abrufe können keine älteren Zeitstempel mehr anzeigen
+- Die Anzeige wird nur vom neuesten laufenden Abruf aktualisiert
 
 ### v3.25 (2026)
 - Trend-Historien für Wind, Temperatur und Luftdruck werden dauerhaft gespeichert
