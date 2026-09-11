@@ -1,10 +1,10 @@
 /**
  * SCM Live-Wetter Mattsee
- * Version: 3.25
+ * Version: 3.26
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.25";
+const VERSION = "3.26";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -39,6 +39,7 @@ const MAX_PRESSURE_HISTORY = 18;
 // Fallback-Daten für API-Ausfälle
 let lastWeatherData = null;
 let lastFetchTime = 0;
+let latestWeatherRequest = 0;
 const FALLBACK_TIMEOUT = 300000; // 5 Minuten
 
 // ====================================================
@@ -448,6 +449,8 @@ function renderFallbackData(json) {
 }
 
 async function loadWeather() {
+    const requestId = ++latestWeatherRequest;
+
     // Lade historische Daten beim ersten Aufruf
     if (windHistory.length === 0) {
         const historyJson = await loadHistoryData();
@@ -569,6 +572,9 @@ async function loadWeather() {
         if (!json.features || json.features.length === 0) {
             throw new Error("Keine Wetterdaten erhalten.");
         }
+        if (requestId !== latestWeatherRequest) {
+            return;
+        }
 
         const p = json.features[0].properties.parameters;
 
@@ -657,6 +663,9 @@ async function loadWeather() {
         
     } catch (err) {
         console.error("GeoSphere Fehler:", err);
+        if (requestId !== latestWeatherRequest) {
+            return;
+        }
         
         // Fallback: Verwende letzte Daten, wenn verfügbar und nicht zu alt
         const now = Date.now();
