@@ -136,9 +136,13 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **3.21**
+Aktuell: **3.22**
 
 ## Changelog
+
+### v3.22 (2026)
+- Geplante GeoSphere-Aktualisierungen umgehen den lokalen Cache
+- API-Abrufe verwenden keine Browser- oder Proxy-Cache-Daten
 
 ### v3.21 (2026)
 - GeoSphere-Daten werden 2 Minuten nach jedem 10-Minuten-Update geladen
