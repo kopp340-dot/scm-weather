@@ -136,9 +136,13 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **3.24**
+Aktuell: **3.25**
 
 ## Changelog
+
+### v3.25 (2026)
+- Trend-Historien für Wind, Temperatur und Luftdruck werden dauerhaft gespeichert
+- Gespeicherte Zeitstempel werden beim Laden für die Trendberechnung normalisiert
 
 ### v3.24 (2026)
 - Lokale Cache-Daten werden nicht mehr als normale Wetteraktualisierung angezeigt

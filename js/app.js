@@ -1,10 +1,10 @@
 /**
  * SCM Live-Wetter Mattsee
- * Version: 3.24
+ * Version: 3.25
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.24";
+const VERSION = "3.25";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -139,6 +139,12 @@ function renderTrendGraph(container, history, trendPerHour, threshold) {
     `;
 }
 
+function persistTrendHistory() {
+    localStorage.setItem("scmWindHistory", JSON.stringify(windHistory));
+    localStorage.setItem("scmTempHistory", JSON.stringify(tempHistory));
+    localStorage.setItem("scmPressureHistory", JSON.stringify(pressureHistory));
+}
+
 /**
  * Wind-Trend aktualisieren
  */
@@ -150,6 +156,7 @@ function updateWindTrend(currentWind) {
     if (windHistory.length > MAX_WIND_HISTORY) {
         windHistory.shift();
     }
+    persistTrendHistory();
 
     if (windHistory.length >= 2) {
         const first = windHistory[0];
@@ -175,6 +182,7 @@ function updateTempTrend(currentTemp) {
     if (tempHistory.length > MAX_TEMP_HISTORY) {
         tempHistory.shift();
     }
+    persistTrendHistory();
 
     if (tempHistory.length >= 2) {
         const first = tempHistory[0];
@@ -200,6 +208,7 @@ function updatePressureTrend(currentPressure) {
     if (pressureHistory.length > MAX_PRESSURE_HISTORY) {
         pressureHistory.shift();
     }
+    persistTrendHistory();
 
     if (pressureHistory.length >= 2) {
         const first = pressureHistory[0];
@@ -531,13 +540,22 @@ async function loadWeather() {
     const storedPressureHistory = localStorage.getItem('scmPressureHistory');
     
     if (storedWindHistory) {
-        windHistory = JSON.parse(storedWindHistory);
+        windHistory = JSON.parse(storedWindHistory).map(entry => ({
+            ...entry,
+            time: new Date(entry.time)
+        }));
     }
     if (storedTempHistory) {
-        tempHistory = JSON.parse(storedTempHistory);
+        tempHistory = JSON.parse(storedTempHistory).map(entry => ({
+            ...entry,
+            time: new Date(entry.time)
+        }));
     }
     if (storedPressureHistory) {
-        pressureHistory = JSON.parse(storedPressureHistory);
+        pressureHistory = JSON.parse(storedPressureHistory).map(entry => ({
+            ...entry,
+            time: new Date(entry.time)
+        }));
     }
     
     try {
