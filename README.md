@@ -136,9 +136,13 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **3.27**
+Aktuell: **3.28**
 
 ## Changelog
+
+### v3.28 (2026)
+- Aktualisierungen werden anhand der aktuellen Uhrzeit geprüft statt nur über einen einzelnen Timer
+- Verzögerte Browser-Timer werden beim nächsten Prüflauf nachgeholt
 
 ### v3.27 (2026)
 - Mobile Browser aktualisieren die Wetterdaten beim Zurückkehren in den sichtbaren Tab
