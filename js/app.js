@@ -1,10 +1,10 @@
 /**
  * SCM Live-Wetter Mattsee
- * Version: 3.27
+ * Version: 3.28
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.27";
+const VERSION = "3.28";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -40,7 +40,7 @@ const MAX_PRESSURE_HISTORY = 18;
 let lastWeatherData = null;
 let lastFetchTime = 0;
 let latestWeatherRequest = 0;
-let weatherUpdateTimer = null;
+let nextScheduledRefresh = null;
 const FALLBACK_TIMEOUT = 300000; // 5 Minuten
 
 // ====================================================
@@ -762,24 +762,16 @@ function updateWebcam() {
  * (2 Minuten nach jedem 10-Minuten-Update: 02, 12, 22, 32, 42, 52)
  */
 function scheduleWeatherUpdate() {
-    // Sofort laden
     loadWeather();
-
-    scheduleNextWeatherUpdate();
+    nextScheduledRefresh = getNextRefreshTime();
 }
 
-function scheduleNextWeatherUpdate() {
-    if (weatherUpdateTimer !== null) {
-        clearTimeout(weatherUpdateTimer);
-    }
-
+function checkScheduledWeatherUpdate() {
     const now = new Date();
-    const waitMilliseconds = getNextRefreshTime(now) - now;
-
-    weatherUpdateTimer = setTimeout(() => {
+    if (nextScheduledRefresh && now >= nextScheduledRefresh) {
         loadWeather();
-        scheduleNextWeatherUpdate();
-    }, waitMilliseconds);
+        nextScheduledRefresh = getNextRefreshTime(new Date(now.getTime() + 1000));
+    }
 }
 
 // ====================================================
@@ -793,11 +785,12 @@ document.getElementById("version").textContent =
 // Webcam laden
 updateWebcam();
 setInterval(updateWebcam, WEBCAM_INTERVAL);
+setInterval(checkScheduledWeatherUpdate, 1000);
 
 document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
         loadWeather();
-        scheduleNextWeatherUpdate();
+        nextScheduledRefresh = getNextRefreshTime();
     }
 });
 
