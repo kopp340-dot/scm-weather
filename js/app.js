@@ -1,10 +1,10 @@
 /**
  * SCM Live-Wetter Mattsee
- * Version: 3.23
+ * Version: 3.24
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.23";
+const VERSION = "3.24";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -40,7 +40,6 @@ const MAX_PRESSURE_HISTORY = 18;
 let lastWeatherData = null;
 let lastFetchTime = 0;
 const FALLBACK_TIMEOUT = 300000; // 5 Minuten
-const CACHE_TIMEOUT = REFRESH_INTERVAL; // Cache bis zum naechsten Abruf
 
 // ====================================================
 // HILFSFUNKTIONEN
@@ -439,7 +438,7 @@ function renderFallbackData(json) {
 
 }
 
-async function loadWeather(forceRefresh = false) {
+async function loadWeather() {
     // Lade historische Daten beim ersten Aufruf
     if (windHistory.length === 0) {
         const historyJson = await loadHistoryData();
@@ -539,20 +538,6 @@ async function loadWeather(forceRefresh = false) {
     }
     if (storedPressureHistory) {
         pressureHistory = JSON.parse(storedPressureHistory);
-    }
-    
-    const cachedData = localStorage.getItem('scmWeatherData');
-    const cachedTime = localStorage.getItem('scmWeatherTime');
-    
-    if (!forceRefresh && cachedData && cachedTime) {
-        const cacheAge = Date.now() - parseInt(cachedTime);
-        if (cacheAge < CACHE_TIMEOUT) {
-            console.log("Verwende Cache-Daten (Alter: " + Math.round(cacheAge/1000) + "s)");
-            renderFallbackData(JSON.parse(cachedData));
-            document.getElementById("refreshInfo").textContent = 
-                "Daten vom Cache (" + new Date(parseInt(cachedTime)).toLocaleTimeString("de-AT") + ")";
-            return; // Abbruch, keine API-Anfrage nötig
-        }
     }
     
     try {
@@ -759,7 +744,7 @@ function scheduleWeatherUpdate() {
 
         // Naechsten Update planen (rekursiv)
         setTimeout(() => {
-            loadWeather(true);
+            loadWeather();
             scheduleNext();
         }, waitMilliseconds);
     }
