@@ -136,9 +136,12 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **3.22**
+Aktuell: **3.23**
 
 ## Changelog
+
+### v3.23 (2026)
+- GeoSphere-Abfragen erhalten einen Cache-Buster, damit stets der aktuelle Datenpunkt geladen wird
 
 ### v3.22 (2026)
 - Geplante GeoSphere-Aktualisierungen umgehen den lokalen Cache
