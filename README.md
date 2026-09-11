@@ -136,9 +136,13 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **3.26**
+Aktuell: **3.27**
 
 ## Changelog
+
+### v3.27 (2026)
+- Mobile Browser aktualisieren die Wetterdaten beim Zurückkehren in den sichtbaren Tab
+- Versionsparameter verhindert veraltete JavaScript-Dateien aus dem Browser-Cache
 
 ### v3.26 (2026)
 - Überlappende API-Abrufe können keine älteren Zeitstempel mehr anzeigen
