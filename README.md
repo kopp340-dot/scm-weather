@@ -136,9 +136,13 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **3.30**
+Aktuell: **3.31**
 
 ## Changelog
+
+### v3.31 (2026)
+- Countdown springt erst nach erfolgreicher Datenaktualisierung auf den nächsten Zyklus
+- Bei verzögerter GeoSphere-Veröffentlichung bleibt die Anzeige beim fälligen Update
 
 ### v3.30 (2026)
 - Zu frühe GeoSphere-Antworten werden nicht als aktuelles Update übernommen

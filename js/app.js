@@ -1,10 +1,10 @@
 /**
  * SCM Live-Wetter Mattsee
- * Version: 3.30
+ * Version: 3.31
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.30";
+const VERSION = "3.31";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -42,6 +42,8 @@ let lastFetchTime = 0;
 let latestWeatherRequest = 0;
 let nextScheduledRefresh = null;
 let delayedRefreshTimer = null;
+let weatherLoadInProgress = false;
+let scheduledRefreshAttempted = false;
 const FALLBACK_TIMEOUT = 300000; // 5 Minuten
 
 // ====================================================
@@ -260,7 +262,8 @@ function getNextRefreshTime(now = new Date()) {
 
 function updateCountdown() {
     const now = new Date();
-    const waitSeconds = Math.ceil((getNextRefreshTime(now) - now) / 1000);
+    const target = nextScheduledRefresh || getNextRefreshTime(now);
+    const waitSeconds = Math.ceil((target - now) / 1000);
 
     const refreshInfo = document.getElementById("refreshInfo");
     if (!refreshInfo) return;
@@ -679,6 +682,8 @@ async function loadWeather() {
         // Speichere im LocalStorage
         localStorage.setItem('scmWeatherData', JSON.stringify(json));
         localStorage.setItem('scmWeatherTime', Date.now().toString());
+        nextScheduledRefresh = getNextRefreshTime(new Date());
+        scheduledRefreshAttempted = false;
         
     } catch (err) {
         console.error("GeoSphere Fehler:", err);
@@ -780,16 +785,27 @@ function updateWebcam() {
  * (2 Minuten nach jedem 10-Minuten-Update: 02, 12, 22, 32, 42, 52)
  */
 function scheduleWeatherUpdate() {
-    loadWeather();
     nextScheduledRefresh = getNextRefreshTime();
+    startWeatherLoad();
 }
 
 function checkScheduledWeatherUpdate() {
     const now = new Date();
-    if (nextScheduledRefresh && now >= nextScheduledRefresh) {
-        loadWeather();
-        nextScheduledRefresh = getNextRefreshTime(new Date(now.getTime() + 1000));
+    if (nextScheduledRefresh && now >= nextScheduledRefresh && !scheduledRefreshAttempted) {
+        scheduledRefreshAttempted = true;
+        startWeatherLoad();
     }
+}
+
+function startWeatherLoad() {
+    if (weatherLoadInProgress) {
+        return;
+    }
+
+    weatherLoadInProgress = true;
+    loadWeather().finally(() => {
+        weatherLoadInProgress = false;
+    });
 }
 
 // ====================================================
@@ -807,8 +823,7 @@ setInterval(checkScheduledWeatherUpdate, 1000);
 
 document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
-        loadWeather();
-        nextScheduledRefresh = getNextRefreshTime();
+        startWeatherLoad();
     }
 });
 
