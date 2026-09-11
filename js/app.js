@@ -1,10 +1,10 @@
 /**
  * SCM Live-Wetter Mattsee
- * Version: 3.28
+ * Version: 3.29
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.28";
+const VERSION = "3.29";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -261,10 +261,10 @@ function updateCountdown() {
         refreshInfo.textContent = "Aktualisierung jetzt...";
     } else if (waitSeconds < 60) {
         // Letzte Minute: Sekunden herunterzaehlen
-        refreshInfo.textContent = "Nächste Aktualisierung in " + Math.ceil(waitSeconds) + " s";
+        refreshInfo.textContent = "Aktualisierung in " + Math.ceil(waitSeconds) + " s";
     } else {
         const displayMinutes = Math.floor(waitSeconds / 60);
-        refreshInfo.textContent = "Nächste Aktualisierung in " + displayMinutes + " Min.";
+        refreshInfo.textContent = "Aktualisierung in " + displayMinutes + " Min.";
     }
 }
 
