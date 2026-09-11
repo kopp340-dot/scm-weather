@@ -1,10 +1,10 @@
 /**
  * SCM Live-Wetter Mattsee
- * Version: 3.13
+ * Version: 3.21
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.20";
+const VERSION = "3.21";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -19,8 +19,8 @@ function getHistoryApiUrl() {
     return `https://dataset.api.hub.geosphere.at/v1/station/timeseries/tawes-v1-10min?station_ids=11152&parameters=FF&parameters=FFX&parameters=TL&parameters=P&start=${startTime}&end=${endTime}`;
 }
 
-// Aktualisierungsintervall: 10 Minuten (600000 ms) = GeoSphere-Update-Intervall
-const REFRESH_INTERVAL = 900000; // 15 Minuten
+// GeoSphere-Update-Intervall: 10 Minuten; Abruf 2 Minuten danach
+const REFRESH_INTERVAL = 600000;
 
 // Panorama-Kamera (Segelclub Mattsee)
 const WEBCAM_URL = "https://scmattsee.panocloud.webcam/current1.jpg";
@@ -40,7 +40,7 @@ const MAX_PRESSURE_HISTORY = 18;
 let lastWeatherData = null;
 let lastFetchTime = 0;
 const FALLBACK_TIMEOUT = 300000; // 5 Minuten
-const CACHE_TIMEOUT = 900000; // 15 Minuten Cache-Gültigkeit
+const CACHE_TIMEOUT = REFRESH_INTERVAL; // Cache bis zum naechsten Abruf
 
 // ====================================================
 // HILFSFUNKTIONEN
@@ -224,29 +224,25 @@ function updatePressureTrend(currentPressure) {
  * Synchronisiert mit GeoSphere: Alle 10 Minuten + 2 Minuten Delay
  * Zeigt Sekunden in der letzten Minute an
  */
+function getNextRefreshTime(now = new Date()) {
+    const target = new Date(now);
+    target.setSeconds(0, 0);
+
+    const minutes = target.getMinutes();
+    const minutesUntilRefresh = (2 - (minutes % 10) + 10) % 10;
+    target.setMinutes(minutes + minutesUntilRefresh);
+
+    // At the refresh minute, schedule the following cycle.
+    if (target <= now) {
+        target.setMinutes(target.getMinutes() + 10);
+    }
+
+    return target;
+}
+
 function updateCountdown() {
     const now = new Date();
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
-
-    // GeoSphere aktualisiert zu vollen 10-Minuten (0, 10, 20, 30, 40, 50)
-    // Wir wollen 2 Minuten DANACH laden
-    const nextFullTenMinutes = Math.floor((minutes + 2) / 10) * 10;
-    let targetMinutes = nextFullTenMinutes;
-    if (targetMinutes <= minutes) {
-        targetMinutes += 10; // Naechster 10-Minuten-Block
-    }
-
-    // Wenn targetMinutes >= 60, dann auf 0 zuruecksetzen (naechste Stunde)
-    if (targetMinutes >= 60) {
-        targetMinutes -= 60;
-    }
-
-    let waitMinutes = targetMinutes - minutes;
-    if (waitMinutes < 0) waitMinutes += 60;
-    let waitSeconds = waitMinutes * 60 - seconds;
-
-    if (waitSeconds < 0) waitSeconds = 0;
+    const waitSeconds = Math.ceil((getNextRefreshTime(now) - now) / 1000);
 
     const refreshInfo = document.getElementById("refreshInfo");
     if (!refreshInfo) return;
@@ -758,29 +754,13 @@ function scheduleWeatherUpdate() {
     // Rekursive Funktion zum Planen des naechsten Updates
     function scheduleNext() {
         const now = new Date();
-        const minutes = now.getMinutes();
-        const seconds = now.getSeconds();
-
-        // GeoSphere aktualisiert zu 0, 10, 20, 30, 40, 50 Minuten
-        // Wir wollen 2 Minuten DANACH laden: 2, 12, 22, 32, 42, 52
-        const geosphereMinute = Math.floor(minutes / 10) * 10;
-        let targetMinutes = geosphereMinute + 2;
-        
-        if (targetMinutes <= minutes) {
-            targetMinutes += 10; // Naechster 10-Minuten-Block + 2
-        }
-        if (targetMinutes >= 60) {
-            targetMinutes -= 60;
-        }
-
-        let waitSeconds = (targetMinutes - minutes) * 60 - seconds;
-        if (waitSeconds < 0) waitSeconds = 0;
+        const waitMilliseconds = getNextRefreshTime(now) - now;
 
         // Naechsten Update planen (rekursiv)
         setTimeout(() => {
             loadWeather();
             scheduleNext();
-        }, waitSeconds * 1000);
+        }, waitMilliseconds);
     }
 
     // Ersten naechsten Update planen

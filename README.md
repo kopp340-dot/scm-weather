@@ -45,7 +45,7 @@ SCM-Homepage eingebettet und funktioniert auch auf dem Smartphone (Vollbild).
   - Wetterwarnungen → https://warnungen.zamg.at/
 
 ### Allgemein
-- Automatische Aktualisierung der Wetterdaten **alle 10 Minuten** (passend zu GeoSphere-Update-Zyklus)
+- Automatische Aktualisierung der Wetterdaten **2 Minuten nach jedem 10-Minuten-Zeitpunkt**
 - Responsives Layout (Desktop, Tablet, Smartphone)
 - Halbtransparente Karten, damit das Webcam-Bild durchscheint
 - iframe-tauglich (volle Breite, kein Frame-Sperre)
@@ -136,16 +136,20 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **3.6**
+Aktuell: **3.21**
 
 ## Changelog
+
+### v3.21 (2026)
+- GeoSphere-Daten werden 2 Minuten nach jedem 10-Minuten-Update geladen
+- Countdown und Cache folgen demselben Aktualisierungszeitpunkt
 
 ### v3.6 (2025)
 - Segelampel-Farben und -Texte an Windfinder angepasst (bis 50 kt)
 - Link "Weitere Wind-Infos" auf Lukes GeosphereGraph-Dashboard aktualisiert
 - **Zweifarbige Segelampel** bei abweichenden Böen (Gradient)
 - **Wind-Trend-Anzeige** (↑/↓/→) für die letzte Stunde
-- Datenabruf auf **10-Minuten-Intervall** angepasst
+- Datenabruf auf **2 Minuten nach jedem 10-Minuten-Update** angepasst
 
 ### v2.0 (2025)
 - Erste stabile Version mit GeoSphere-Daten, Segelampel, Windrose und Webcam-Hintergrund
