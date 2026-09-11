@@ -136,9 +136,17 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **3.23**
+Aktuell: **3.25**
 
 ## Changelog
+
+### v3.25 (2026)
+- Trend-Historien für Wind, Temperatur und Luftdruck werden dauerhaft gespeichert
+- Gespeicherte Zeitstempel werden beim Laden für die Trendberechnung normalisiert
+
+### v3.24 (2026)
+- Lokale Cache-Daten werden nicht mehr als normale Wetteraktualisierung angezeigt
+- Der lokale Cache dient nur noch als Fallback bei einem API-Ausfall
 
 ### v3.23 (2026)
 - GeoSphere-Abfragen erhalten einen Cache-Buster, damit stets der aktuelle Datenpunkt geladen wird

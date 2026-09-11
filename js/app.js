@@ -1,10 +1,10 @@
 /**
  * SCM Live-Wetter Mattsee
- * Version: 3.23
+ * Version: 3.25
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.23";
+const VERSION = "3.25";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -40,7 +40,6 @@ const MAX_PRESSURE_HISTORY = 18;
 let lastWeatherData = null;
 let lastFetchTime = 0;
 const FALLBACK_TIMEOUT = 300000; // 5 Minuten
-const CACHE_TIMEOUT = REFRESH_INTERVAL; // Cache bis zum naechsten Abruf
 
 // ====================================================
 // HILFSFUNKTIONEN
@@ -140,6 +139,12 @@ function renderTrendGraph(container, history, trendPerHour, threshold) {
     `;
 }
 
+function persistTrendHistory() {
+    localStorage.setItem("scmWindHistory", JSON.stringify(windHistory));
+    localStorage.setItem("scmTempHistory", JSON.stringify(tempHistory));
+    localStorage.setItem("scmPressureHistory", JSON.stringify(pressureHistory));
+}
+
 /**
  * Wind-Trend aktualisieren
  */
@@ -151,6 +156,7 @@ function updateWindTrend(currentWind) {
     if (windHistory.length > MAX_WIND_HISTORY) {
         windHistory.shift();
     }
+    persistTrendHistory();
 
     if (windHistory.length >= 2) {
         const first = windHistory[0];
@@ -176,6 +182,7 @@ function updateTempTrend(currentTemp) {
     if (tempHistory.length > MAX_TEMP_HISTORY) {
         tempHistory.shift();
     }
+    persistTrendHistory();
 
     if (tempHistory.length >= 2) {
         const first = tempHistory[0];
@@ -201,6 +208,7 @@ function updatePressureTrend(currentPressure) {
     if (pressureHistory.length > MAX_PRESSURE_HISTORY) {
         pressureHistory.shift();
     }
+    persistTrendHistory();
 
     if (pressureHistory.length >= 2) {
         const first = pressureHistory[0];
@@ -439,7 +447,7 @@ function renderFallbackData(json) {
 
 }
 
-async function loadWeather(forceRefresh = false) {
+async function loadWeather() {
     // Lade historische Daten beim ersten Aufruf
     if (windHistory.length === 0) {
         const historyJson = await loadHistoryData();
@@ -532,27 +540,22 @@ async function loadWeather(forceRefresh = false) {
     const storedPressureHistory = localStorage.getItem('scmPressureHistory');
     
     if (storedWindHistory) {
-        windHistory = JSON.parse(storedWindHistory);
+        windHistory = JSON.parse(storedWindHistory).map(entry => ({
+            ...entry,
+            time: new Date(entry.time)
+        }));
     }
     if (storedTempHistory) {
-        tempHistory = JSON.parse(storedTempHistory);
+        tempHistory = JSON.parse(storedTempHistory).map(entry => ({
+            ...entry,
+            time: new Date(entry.time)
+        }));
     }
     if (storedPressureHistory) {
-        pressureHistory = JSON.parse(storedPressureHistory);
-    }
-    
-    const cachedData = localStorage.getItem('scmWeatherData');
-    const cachedTime = localStorage.getItem('scmWeatherTime');
-    
-    if (!forceRefresh && cachedData && cachedTime) {
-        const cacheAge = Date.now() - parseInt(cachedTime);
-        if (cacheAge < CACHE_TIMEOUT) {
-            console.log("Verwende Cache-Daten (Alter: " + Math.round(cacheAge/1000) + "s)");
-            renderFallbackData(JSON.parse(cachedData));
-            document.getElementById("refreshInfo").textContent = 
-                "Daten vom Cache (" + new Date(parseInt(cachedTime)).toLocaleTimeString("de-AT") + ")";
-            return; // Abbruch, keine API-Anfrage nötig
-        }
+        pressureHistory = JSON.parse(storedPressureHistory).map(entry => ({
+            ...entry,
+            time: new Date(entry.time)
+        }));
     }
     
     try {
@@ -759,7 +762,7 @@ function scheduleWeatherUpdate() {
 
         // Naechsten Update planen (rekursiv)
         setTimeout(() => {
-            loadWeather(true);
+            loadWeather();
             scheduleNext();
         }, waitMilliseconds);
     }
