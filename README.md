@@ -136,9 +136,12 @@ einfachen Menülink reicht auch:
 
 ## Version
 
-Aktuell: **3.28**
+Aktuell: **3.29**
 
 ## Changelog
+
+### v3.29 (2026)
+- Countdown-Text für kleine Bildschirme auf „Aktualisierung in“ gekürzt
 
 ### v3.28 (2026)
 - Aktualisierungen werden anhand der aktuellen Uhrzeit geprüft statt nur über einen einzelnen Timer
