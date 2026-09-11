@@ -1,10 +1,10 @@
 /**
  * SCM Live-Wetter Mattsee
- * Version: 3.29
+ * Version: 3.30
  * Datenquelle: GeoSphere Austria (GeoSphere Hub API)
  */
 
-const VERSION = "3.29";
+const VERSION = "3.30";
 
 // GeoSphere API - 10-Minuten-Daten für Station Mattsee (ID: 11152)
 const API_URL = 
@@ -41,6 +41,7 @@ let lastWeatherData = null;
 let lastFetchTime = 0;
 let latestWeatherRequest = 0;
 let nextScheduledRefresh = null;
+let delayedRefreshTimer = null;
 const FALLBACK_TIMEOUT = 300000; // 5 Minuten
 
 // ====================================================
@@ -52,6 +53,13 @@ const FALLBACK_TIMEOUT = 300000; // 5 Minuten
  */
 function msToKnots(ms) {
     return ms * 1.94384;
+}
+
+function getExpectedWeatherTimestamp(now = new Date()) {
+    const expected = new Date(now);
+    expected.setSeconds(0, 0);
+    expected.setMinutes(Math.floor(expected.getMinutes() / 10) * 10);
+    return expected;
 }
 
 /**
@@ -576,6 +584,16 @@ async function loadWeather() {
         if (requestId !== latestWeatherRequest) {
             return;
         }
+        const dataTimestamp = new Date(json.timestamps[0]);
+        if (dataTimestamp < getExpectedWeatherTimestamp()) {
+            if (delayedRefreshTimer === null) {
+                delayedRefreshTimer = setTimeout(() => {
+                    delayedRefreshTimer = null;
+                    loadWeather();
+                }, 30000);
+            }
+            return;
+        }
 
         const p = json.features[0].properties.parameters;
 
@@ -638,7 +656,7 @@ async function loadWeather() {
         }
 
         // --- ZEITSTEMPEL ---
-        const ts = new Date(json.timestamps[0]);
+        const ts = dataTimestamp;
         const timestampElement = document.getElementById("timestamp");
         if (timestampElement) {
             timestampElement.textContent = ts.toLocaleString("de-AT", {
